@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>إدارة العملاء - Ghadeer Logistics</title>
+  <style>
+    body { font-family:'Cairo',sans-serif; background:#f5f6fa; margin:0; padding:20px; color:#333; }
+    h1 { text-align:center; color:#cc3300; }
+    .top-bar { display:flex; justify-content:center; align-items:center; gap:10px; margin:20px auto; flex-wrap:wrap; }
+    input, button, select { padding:10px; border-radius:8px; border:1px solid #ccc; font-size:15px; }
+    button { border:none; font-weight:bold; cursor:pointer; background:#cc3300; color:#fff; transition:.3s; }
+    button:hover { background:#ff5500; }
+    table { width:100%; border-collapse:collapse; margin-top:20px; background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.1); }
+    th,td { padding:12px; border-bottom:1px solid #eee; text-align:center; }
+    th { background:#f5f5f5; color:#444; }
+    tr:hover { background:#fafafa; }
+    .action-btn { padding:5px 10px; border:none; border-radius:6px; cursor:pointer; font-size:13px; margin:2px; }
+    .edit { background:#ffc107; color:#333; }
+    .edit:hover { background:#e0a800; }
+    .delete { background:#dc3545; color:#fff; }
+    .delete:hover { background:#bd2130; }
+    .view { background:#28a745; color:#fff; }
+    .view:hover { background:#218838; }
+    .export { background:#007bff; color:#fff; }
+    .export:hover { background:#0056b3; }
+  </style>
+</head>
+<body>
+  <h1>إدارة العملاء</h1>
+  <div class="top-bar">
+    <form id="clientForm" onsubmit="addClient(event)">
+      <input type="text" id="clientName" placeholder="👤 اسم العميل" required>
+      <button type="submit">➕ إضافة عميل</button>
+    </form>
+    <input type="text" id="search" placeholder="🔍 بحث عن عميل..." oninput="render()">
+    <select id="sort" onchange="render()">
+      <option value="">↕️ بدون فرز</option>
+      <option value="nameAsc">🔤 الاسم (أ-ي)</option>
+      <option value="nameDesc">🔤 الاسم (ي-أ)</option>
+      <option value="invoices">📑 عدد الفواتير</option>
+      <option value="total">💰 مجموع الحساب</option>
+    </select>
+    <button class="export" onclick="exportCSV()">⬇️ تصدير CSV</button>
+  </div>
+  <table>
+    <thead>
+      <tr><th>👤 العميل</th><th>📑 عدد الفواتير</th><th>💰 مجموع الحساب</th><th>⚙️ خيارات</th></tr>
+    </thead>
+    <tbody id="clients"></tbody>
+  </table>
+<script>
+let accounts = JSON.parse(localStorage.getItem("accounts")) || {};
+
+function render(){
+  const tbody=document.getElementById("clients");
+  tbody.innerHTML="";
+  const query=document.getElementById("search").value.trim();
+  let clients = Object.keys(accounts);
+  // filter by search
+  if(query) clients = clients.filter(c => c.includes(query));
+  // sort
+  const sort=document.getElementById("sort").value;
+  clients.sort((a,b)=>{
+    if(sort==="nameAsc") return a.localeCompare(b);
+    if(sort==="nameDesc") return b.localeCompare(a);
+    if(sort==="invoices") return accounts[b].length - accounts[a].length;
+    if(sort==="total"){
+      let ta=accounts[a].reduce((s,e)=>s+Number(e.price),0);
+      let tb=accounts[b].reduce((s,e)=>s+Number(e.price),0);
+      return tb - ta;
+    }
+    return 0;
+  });
+  for(const client of clients){
+    let total=accounts[client].reduce((s,e)=>s+Number(e.price),0);
+    let tr=document.createElement("tr");
+    tr.innerHTML=`<td>${client}</td>
+                  <td>${accounts[client].length}</td>
+                  <td>${total.toLocaleString("en-US")}</td>
+                  <td>
+                    <button class="action-btn view" onclick="viewClient('${client}')">👁️ عرض</button>
+                    <button class="action-btn edit" onclick="editClient('${client}')">✏️ تعديل</button>
+                    <button class="action-btn delete" onclick="deleteClient('${client}')">🗑️ حذف</button>
+                  </td>`;
+    tbody.appendChild(tr);
+  }
+}
+
+function addClient(e){
+  e.preventDefault();
+  const name=document.getElementById("clientName").value.trim();
+  if(!name) return;
+  if(!accounts[name]) accounts[name]=[];
+  localStorage.setItem("accounts",JSON.stringify(accounts));
+  render();
+  document.getElementById("clientForm").reset();
+}
+
+function viewClient(name){
+  window.location.href="client.html?name="+encodeURIComponent(name);
+}
+function editClient(oldName){
+  const newName=prompt("أدخل الاسم الجديد للعميل:", oldName);
+  if(newName && newName!==oldName){
+    accounts[newName]=accounts[oldName];
+    delete accounts[oldName];
+    localStorage.setItem("accounts",JSON.stringify(accounts));
+    render();
+  }
+}
+function deleteClient(name){
+  if(confirm("هل تريد حذف العميل "+name+" مع جميع فواتيره؟")){
+    delete accounts[name];
+    localStorage.setItem("accounts",JSON.stringify(accounts));
+    render();
+  }
+}
+
+function exportCSV(){
+  let rows=[["العميل","عدد الفواتير","مجموع الحساب"]];
+  for(const client in accounts){
+    let total=accounts[client].reduce((s,e)=>s+Number(e.price),0);
+    rows.push([client, accounts[client].length, total]);
+  }
+  let csvContent=rows.map(r=>r.join(",")).join("\n");
+  let blob=new Blob([csvContent],{type:"text/csv;charset=utf-8;"});
+  let url=URL.createObjectURL(blob);
+  let link=document.createElement("a");
+  link.setAttribute("href",url);
+  link.setAttribute("download","clients.csv");
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+render();
+</script>
+</body>
+</html>

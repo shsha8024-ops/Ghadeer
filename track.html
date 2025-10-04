@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head><meta charset="UTF-8"><title>تتبع الشحنة</title>
+<style>body{font-family:'Cairo';background:#f5f6fa;text-align:center;padding:30px;}h1{color:#cc3300;}input,button{padding:10px;margin:10px;border-radius:8px;border:1px solid #ccc;}button{background:#28a745;color:#fff;border:none;}button:hover{background:#218838;}.badge{background:#ffc107;padding:4px 8px;border-radius:6px;display:inline-block;margin:2px;}</style>
+</head>
+<body>
+<h1>📦 تتبع الشحنة</h1>
+<input id="tracking" placeholder="GLT-2025-1001"><button onclick="track()">بحث</button>
+<div id="result"></div>
+<script>
+function track(){
+ const input=document.getElementById('tracking').value.trim();
+ const result=document.getElementById('result');
+ if(!input){ result.textContent="⚠️ الرجاء إدخال رقم التعقب."; return; }
+ const mock={"GLT-2025-1001":{status:"📍 وصلت إلى أربيل",history:[["2025-10-01","تم الاستلام"],["2025-10-02","غادرت المستودع"],["2025-10-03","قيد النقل"],["2025-10-04","📍 وصلت أربيل"]]}, "GLT-2025-0999":{status:"🚚 قيد النقل",history:[["2025-10-02","استلام"],["2025-10-03","غادرت"]]} };
+ const data=mock[input];
+ if(!data){ result.textContent="❌ لم يتم العثور على شحنة بهذا الرقم."; return; }
+ let lines=data.history.map(h=>`<div><span class='badge'>${h[0]}</span> ${h[1]}</div>`).join("");
+ result.innerHTML=`<div><strong>الحالة الحالية:</strong> ${data.status}</div><hr>${lines}`;
+}
+</script>
+</body></html>
