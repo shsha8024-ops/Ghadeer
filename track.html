@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head><meta charset="UTF-8"><title>تتبع الشحنة</title>
-<style>body{font-family:'Cairo';background:#f5f6fa;text-align:center;padding:30px;}h1{color:#cc3300;}input,button{padding:10px;margin:10px;border-radius:8px;border:1px solid #ccc;}button{background:#28a745;color:#fff;border:none;}button:hover{background:#218838;}.badge{background:#ffc107;padding:4px 8px;border-radius:6px;display:inline-block;margin:2px;}</style>
+<style>body{font-family:'Cairo';background:#f5f6fa;text-align:center;padding:30px;}h1{color:#cc3300;}input,button{padding:10px;margin:10px;border-radius:8px;border:1px solid #ccc;}button{background:#28a745;color:#fff;border:none;}button:hover{background:#218838;}.badge{background:#ffc107;padding:4px 8px;border-radius:6px;display:inline-block;margin:2px;}.back-container{text-align:right;margin-bottom:10px;}.back-button{display:inline-flex;align-items:center;gap:6px;background:#003366;color:#fff;padding:10px 18px;border-radius:999px;text-decoration:none;font-weight:600;box-shadow:0 4px 10px rgba(0,0,0,0.15);transition:transform .2s ease,box-shadow .2s ease,background .2s ease;}.back-button:hover{background:#005599;transform:translateY(-2px);box-shadow:0 6px 14px rgba(0,0,0,0.18);}</style>
 </head>
 <body>
+<div class="back-container"><a href="#" class="back-button" onclick="history.back(); return false;">🔙 رجوع</a></div>
 <h1>📦 تتبع الشحنة</h1>
 <input id="tracking" placeholder="GLT-2025-1001"><button onclick="track()">بحث</button>
 <div id="result"></div>
