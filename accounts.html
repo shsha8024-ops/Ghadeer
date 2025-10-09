@@ -28,6 +28,28 @@
       margin:0 auto;
       padding:32px 20px 60px;
     }
+    .back-container {
+      text-align:right;
+      margin-bottom:20px;
+    }
+    .back-button {
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      background:#003366;
+      color:#fff;
+      padding:10px 18px;
+      border-radius:999px;
+      text-decoration:none;
+      font-weight:600;
+      box-shadow:0 6px 16px rgba(0,0,0,0.18);
+      transition:transform .2s ease, box-shadow .2s ease, background .2s ease;
+    }
+    .back-button:hover {
+      background:#005599;
+      transform:translateY(-2px);
+      box-shadow:0 8px 20px rgba(0,0,0,0.22);
+    }
     header {
       display:flex;
       align-items:center;
@@ -283,6 +305,7 @@
 </head>
 <body>
   <div class="page">
+    <div class="back-container"><a href="#" class="back-button" onclick="history.back(); return false;">🔙 رجوع</a></div>
     <header>
       <div class="brand">
         <img src="your-logo.jpeg" alt="Ghadeer Logistics logo">
@@ -311,7 +334,7 @@
       <article class="summary-card">
         <h3>إجمالي المبالغ</h3>
         <strong id="metricAmount">0</strong>
-        <span>💰 ريال سعودي</span>
+        <span>💵 دولار أمريكي</span>
       </article>
       <article class="summary-card">
         <h3>متوسط قيمة الفاتورة</h3>
