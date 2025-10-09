@@ -432,25 +432,71 @@
         emptyState.hidden = true;
       }
 
-      for(const client of clients){
-        const invoices = accounts[client];
-        const total = totalAmountFor(client);
-        const note = clientNotesMap[client];
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td><strong>${client}</strong></td>
-          <td><span class="tag">${invoices.length}</span></td>
-          <td>${formatCurrency(total)}</td>
-          <td>${note ? `<span class="note-pill" title="${note}">${notePreview(note)}</span>` : "--"}</td>
-          <td>
-            <div class="actions">
-              <button class="action-btn view" onclick="viewClient('${client}')">عرض</button>
-              <button class="action-btn edit" onclick="editClient('${client}')">تعديل</button>
-              <button class="action-btn delete" onclick="deleteClient('${client}')">حذف</button>
-            </div>
-          </td>`;
-        clientsBody.appendChild(tr);
-      }
+        for(const client of clients){
+          const invoices = accounts[client];
+          const total = totalAmountFor(client);
+          const note = clientNotesMap[client];
+          const tr = document.createElement("tr");
+
+          const nameCell = document.createElement("td");
+          const strong = document.createElement("strong");
+          strong.textContent = client;
+          nameCell.appendChild(strong);
+          tr.appendChild(nameCell);
+
+          const invoiceCell = document.createElement("td");
+          const invoiceTag = document.createElement("span");
+          invoiceTag.className = "tag";
+          invoiceTag.textContent = invoices.length;
+          invoiceCell.appendChild(invoiceTag);
+          tr.appendChild(invoiceCell);
+
+          const totalCell = document.createElement("td");
+          totalCell.textContent = formatCurrency(total);
+          tr.appendChild(totalCell);
+
+          const noteCell = document.createElement("td");
+          if(note){
+            const notePill = document.createElement("span");
+            notePill.className = "note-pill";
+            notePill.textContent = notePreview(note);
+            notePill.title = note;
+            noteCell.appendChild(notePill);
+          } else {
+            noteCell.textContent = "--";
+          }
+          tr.appendChild(noteCell);
+
+          const actionsCell = document.createElement("td");
+          const actionsWrapper = document.createElement("div");
+          actionsWrapper.className = "actions";
+
+          const viewButton = document.createElement("button");
+          viewButton.type = "button";
+          viewButton.className = "action-btn view";
+          viewButton.textContent = "عرض";
+          viewButton.addEventListener("click", () => viewClient(client));
+          actionsWrapper.appendChild(viewButton);
+
+          const editButton = document.createElement("button");
+          editButton.type = "button";
+          editButton.className = "action-btn edit";
+          editButton.textContent = "تعديل";
+          editButton.addEventListener("click", () => editClient(client));
+          actionsWrapper.appendChild(editButton);
+
+          const deleteButton = document.createElement("button");
+          deleteButton.type = "button";
+          deleteButton.className = "action-btn delete";
+          deleteButton.textContent = "حذف";
+          deleteButton.addEventListener("click", () => deleteClient(client));
+          actionsWrapper.appendChild(deleteButton);
+
+          actionsCell.appendChild(actionsWrapper);
+          tr.appendChild(actionsCell);
+
+          clientsBody.appendChild(tr);
+        }
 
       updateMetrics();
       renderTopClients();
