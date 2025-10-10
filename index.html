@@ -28,6 +28,16 @@
     nav a { margin:0 15px; color:#fff; text-decoration:none; font-weight:bold; }
     main { padding:40px; }
     h1 { color:#cc3300; }
+    .welcome-message {
+      max-width:640px;
+      margin:20px auto 0;
+      padding:16px 20px;
+      background:#e8f5e9;
+      color:#1b5e20;
+      border-radius:12px;
+      font-weight:600;
+      box-shadow:0 8px 18px rgba(0,0,0,0.12);
+    }
   </style>
 </head>
 <body>
@@ -45,9 +55,28 @@
     <a href="login.html">🔐 تسجيل الدخول</a>
   </nav>
 </header>
+<div id="welcome" class="welcome-message" style="display:none;"></div>
 <main>
   <h1>مرحباً بكم في Ghadeer Logistics</h1>
   <p>حلول النقل والشحن داخل كردستان والعراق.</p>
 </main>
+<script>
+  (function showWelcomeMessage() {
+    try {
+      const welcomeText = sessionStorage.getItem('ghadeerWelcome');
+      if (!welcomeText) {
+        return;
+      }
+      const container = document.getElementById('welcome');
+      if (container) {
+        container.textContent = welcomeText;
+        container.style.display = 'block';
+      }
+      sessionStorage.removeItem('ghadeerWelcome');
+    } catch (error) {
+      console.warn('تعذر قراءة رسالة الترحيب:', error);
+    }
+  })();
+</script>
 </body>
 </html>

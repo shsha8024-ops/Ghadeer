@@ -111,7 +111,6 @@
         </div>
       </div>
       <div class="quick-actions">
-        <button class="btn btn-secondary" type="button" id="seedData">تحميل بيانات تجريبية</button>
         <button class="btn btn-primary" type="button" onclick="exportCSV()">تصدير تقرير CSV</button>
       </div>
     </header>
@@ -189,7 +188,7 @@
             <tbody id="clients"></tbody>
           </table>
           <div class="empty-state" id="emptyState" hidden>
-            لا توجد بيانات بعد. ابدأ بإضافة عملاء أو حمّل بيانات تجريبية.
+            لا توجد بيانات بعد. ابدأ بإضافة عملاء جدد لعرض سجلاتهم هنا.
           </div>
         </div>
       </section>
@@ -244,7 +243,6 @@
     document.getElementById("clientForm").addEventListener("submit", addClient);
     searchInput.addEventListener("input", render);
     sortSelect.addEventListener("change", render);
-    document.getElementById("seedData").addEventListener("click", seedDemoData);
 
     function render(){
       clientsBody.innerHTML = "";
@@ -455,43 +453,6 @@
         li.innerHTML = `<strong>${item.name}</strong><span>${formatCurrency(item.total)}</span>`;
         topClientsList.appendChild(li);
       }
-    }
-
-    function seedDemoData(){
-      accounts = {
-        "شركة شمال البحر": [
-          { invoice:"INV-001", price: 4200 },
-          { invoice:"INV-014", price: 3600 },
-          { invoice:"INV-028", price: 6900 }
-        ],
-        "مؤسسة الميناء الحديث": [
-          { invoice:"INV-004", price: 1800 },
-          { invoice:"INV-051", price: 2400 }
-        ],
-        "تحالف الخليج اللوجستي": [
-          { invoice:"INV-019", price: 9500 },
-          { invoice:"INV-121", price: 7200 },
-          { invoice:"INV-177", price: 5300 },
-          { invoice:"INV-190", price: 2800 }
-        ],
-        "حلول النور للملاحة": [
-          { invoice:"INV-031", price: 3100 }
-        ],
-        "شركة المسار الذكي": [
-          { invoice:"INV-211", price: 8700 },
-          { invoice:"INV-212", price: 6500 }
-        ]
-      };
-      clientNotesMap = {
-        "شركة شمال البحر": "عميل استراتيجي مع شحنات شهرية ثابتة.",
-        "مؤسسة الميناء الحديث": "يحتاج لتقارير أسبوعية تفصيلية.",
-        "تحالف الخليج اللوجستي": "أكبر عميل من ناحية حجم الشحنات.",
-        "حلول النور للملاحة": "عميل جديد قيد المتابعة.",
-        "شركة المسار الذكي": "يتم الدفع بآلية تحويل بنكي كل 10 أيام."
-      };
-      localStorage.setItem("accounts", JSON.stringify(accounts));
-      localStorage.setItem(clientNotesKey, JSON.stringify(clientNotesMap));
-      render();
     }
 
     function notePreview(note){

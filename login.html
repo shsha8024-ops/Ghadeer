@@ -1,13 +1,321 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head><meta charset="UTF-8"><title>تسجيل الدخول</title>
-<style>body{font-family:'Cairo';background:linear-gradient(135deg,#003366,#cc3300);display:flex;justify-content:center;align-items:center;height:100vh;color:#fff;position:relative;padding:20px;box-sizing:border-box;}div{background:#fff;color:#003366;padding:40px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.3);text-align:center;width:100%;max-width:360px;}input,button{width:100%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #ccc;font-size:15px;}button{background:#cc3300;color:#fff;border:none;cursor:pointer;}button:hover{background:#ff5500;}.msg{margin-top:10px;color:#cc3300;}.back-button{position:absolute;top:20px;right:20px;display:inline-flex;align-items:center;gap:6px;background:rgba(0,0,0,0.35);color:#fff;padding:10px 18px;border-radius:999px;text-decoration:none;font-weight:600;backdrop-filter:blur(6px);transition:transform .2s ease,box-shadow .2s ease,background .2s ease;}body .back-button:hover{background:rgba(0,0,0,0.55);transform:translateY(-2px);box-shadow:0 6px 14px rgba(0,0,0,0.25);}</style>
+<head>
+  <meta charset="UTF-8">
+  <title>تسجيل الدخول | Ghadeer</title>
+  <style>
+    :root {
+      color-scheme: dark light;
+      --night: #050b22;
+      --dusk: #12244d;
+      --accent: #f39c12;
+      --glass: rgba(255, 255, 255, 0.08);
+      --radius: 22px;
+      --text-light: #f8faff;
+      --text-muted: #c7d3ff;
+      --error: #ff7675;
+      --success: #2ecc71;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: 'Cairo', 'Tahoma', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 16px;
+      background: radial-gradient(circle at top right, rgba(243, 156, 18, 0.25), transparent 35%),
+                  radial-gradient(circle at bottom left, rgba(54, 209, 220, 0.25), transparent 45%),
+                  linear-gradient(135deg, var(--night), var(--dusk));
+      color: var(--text-light);
+      position: relative;
+      overflow: hidden;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: absolute;
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.06);
+      filter: blur(0px);
+      z-index: 0;
+      animation: float 14s linear infinite;
+    }
+
+    body::before {
+      top: -120px;
+      left: -160px;
+    }
+
+    body::after {
+      bottom: -160px;
+      right: -200px;
+      animation-duration: 18s;
+      animation-direction: reverse;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-12px) rotate(3deg); }
+      100% { transform: translateY(0) rotate(0deg); }
+    }
+
+    .card {
+      position: relative;
+      z-index: 1;
+      width: min(440px, 100%);
+      padding: 36px 32px 42px;
+      background: rgba(4, 12, 36, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius);
+      box-shadow: 0 28px 60px rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(16px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 28px;
+      letter-spacing: 0.5px;
+    }
+
+    .badge {
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(243, 156, 18, 0.12);
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .card p {
+      margin: 0 0 22px;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: var(--text-light);
+    }
+
+    .field {
+      position: relative;
+      margin-bottom: 22px;
+    }
+
+    .field input {
+      width: 100%;
+      padding: 14px 46px 14px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(15, 28, 72, 0.68);
+      color: var(--text-light);
+      font-size: 16px;
+      transition: border 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .field input:focus {
+      outline: none;
+      border-color: rgba(243, 156, 18, 0.6);
+      box-shadow: 0 0 0 4px rgba(243, 156, 18, 0.12);
+    }
+
+    .field span {
+      position: absolute;
+      inset-inline-end: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--accent);
+      opacity: 0.7;
+    }
+
+    button {
+      width: 100%;
+      padding: 15px;
+      border-radius: 16px;
+      border: none;
+      font-size: 17px;
+      font-weight: 700;
+      cursor: pointer;
+      background: linear-gradient(135deg, #f39c12, #f1c40f);
+      color: #1b1b28;
+      letter-spacing: 0.5px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 30px rgba(243, 156, 18, 0.25);
+    }
+
+    .meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 26px;
+    }
+
+    .meta a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .message {
+      margin-top: 18px;
+      min-height: 26px;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .message.success {
+      color: var(--success);
+    }
+
+    .message.error {
+      color: var(--error);
+    }
+
+    .back-button {
+      position: absolute;
+      top: 24px;
+      inset-inline-start: 24px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-light);
+      text-decoration: none;
+      font-weight: 600;
+      backdrop-filter: blur(10px);
+      transition: transform 0.2s ease, background 0.2s ease;
+      z-index: 2;
+    }
+
+    .back-button:hover {
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.16);
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 24px 12px;
+      }
+
+      .card {
+        padding: 28px 22px 34px;
+      }
+
+      .brand h1 {
+        font-size: 24px;
+      }
+    }
+  </style>
 </head>
 <body>
-<a href="#" class="back-button" onclick="history.back(); return false;">🔙 رجوع</a>
-<div><h1>🔐 تسجيل الدخول</h1>
-<input id="user" placeholder="اسم المستخدم"><input type="password" id="pass" placeholder="كلمة المرور">
-<button onclick="login()">دخول</button><div id="msg" class="msg"></div></div>
-<script>
-function login(){const u=document.getElementById("user").value;const p=document.getElementById("pass").value;const msg=document.getElementById("msg");if(u==="admin"&&p==="1234"){msg.textContent="✅ تم تسجيل الدخول";setTimeout(()=>{window.location.href="accounts.html";},1000);}else{msg.textContent="❌ بيانات غير صحيحة";}}
-</script></body></html>
+  <a href="index.html" class="back-button">🏠 الرئيسية</a>
+  <div class="card" role="main">
+    <div class="brand">
+      <h1>مرحبا بكم</h1>
+      <span class="badge">بوابة Ghadeer</span>
+    </div>
+    <p>أدخل بياناتك للمتابعة. الحسابات المتاحة: مالك الشركة <strong>Star</strong> أو المستخدم <strong>Muhanad</strong>.</p>
+
+    <div class="meta">
+      <span>حماية متعددة الطبقات</span>
+      <a href="#" onclick="showHint(event)">تلميح سريع</a>
+    </div>
+
+    <form onsubmit="login(event)" aria-labelledby="login-title">
+      <label for="username">اسم المستخدم</label>
+      <div class="field">
+        <input id="username" name="username" autocomplete="username" placeholder="اكتب اسم المستخدم" required>
+        <span>👤</span>
+      </div>
+
+      <label for="password">كلمة المرور</label>
+      <div class="field">
+        <input id="password" name="password" type="password" autocomplete="current-password" placeholder="اكتب كلمة المرور" required>
+        <span>🔒</span>
+      </div>
+
+      <button type="submit">تسجيل الدخول</button>
+    </form>
+
+    <div id="message" class="message" aria-live="polite"></div>
+  </div>
+
+  <script>
+    const credentials = {
+      "star": { password: "Star1996", role: "مالك Ghadeer" },
+      "muhanad": { password: "Muhanad1996", role: "مستخدم معتمد" }
+    };
+
+    function normalize(value) {
+      return value.trim().toLowerCase();
+    }
+
+    function showHint(event) {
+      event.preventDefault();
+      const message = document.getElementById('message');
+      message.textContent = "المالك: Star | المستخدم: Muhanad";
+      message.className = 'message';
+    }
+
+    function login(event) {
+      event.preventDefault();
+      const usernameInput = document.getElementById('username');
+      const passwordInput = document.getElementById('password');
+      const message = document.getElementById('message');
+
+      const username = normalize(usernameInput.value);
+      const password = passwordInput.value.trim();
+
+      const account = credentials[username];
+
+      if (account && account.password === password) {
+        const welcomeText = `✅ أهلاً ${account.role}! تم فتح الصفحة الرئيسية.`;
+        message.textContent = welcomeText;
+        message.className = 'message success';
+        try {
+          sessionStorage.setItem('ghadeerWelcome', welcomeText);
+        } catch (error) {
+          console.warn('تعذر حفظ رسالة الترحيب:', error);
+        }
+        window.location.href = 'index.html';
+      } else {
+        message.textContent = '❌ البيانات المدخلة غير صحيحة. حاول مرة أخرى.';
+        message.className = 'message error';
+      }
+    }
+
+    document.getElementById('password').addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        login(event);
+      }
+    });
+  </script>
+</body>
+</html>
