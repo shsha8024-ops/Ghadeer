@@ -2,504 +2,212 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>لوحة الحسابات - Ghadeer Logistics</title>
-   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>إدارة العملاء - Ghadeer Logistics</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    :root {
-      --primary:#cc3300;
-      --primary-dark:#a32900;
-      --accent:#ffd166;
-      --bg:#f2f4f8;
-      --card:#ffffff;
-      --text:#1a1d23;
-      --muted:#6b7280;
-      --radius:18px;
-      font-family:'Cairo',sans-serif;
-    }
-    * { box-sizing:border-box; }
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+
+    * { box-sizing: border-box; }
     body {
-      margin:0;
-      min-height:100vh;
-      background:linear-gradient(135deg,#fef2f2 0%,#f2f4f8 55%,#eef2ff 100%);
-      color:var(--text);
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(135deg, #2c003e, #4a0072);
+      margin: 0;
+      padding: 20px;
+      color: #fff;
     }
-    .page {
-      max-width:1200px;
-      margin:0 auto;
-      padding:32px 20px 60px;
-    }
-    .back-container {
-      text-align:right;
-      margin-bottom:20px;
-    }
-    .back-button {
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      background:#003366;
-      color:#fff;
-      padding:10px 18px;
-      border-radius:999px;
-      text-decoration:none;
-      font-weight:600;
-      box-shadow:0 6px 16px rgba(0,0,0,0.18);
-      transition:transform .2s ease, box-shadow .2s ease, background .2s ease;
-    }
-    .back-button:hover {
-      background:#005599;
-      transform:translateY(-2px);
-      box-shadow:0 8px 20px rgba(0,0,0,0.22);
-    }
-    header {
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:20px;
-      margin-bottom:32px;
-      flex-wrap:wrap;
-    }
-    .brand {
-      display:flex;
-      align-items:center;
-      gap:16px;
-    }
-    .brand img {
-      width:58px;
-      height:58px;
-      border-radius:50%;
-      object-fit:cover;
-      box-shadow:0 8px 16px rgba(204,51,0,0.18);
-    }
+
     h1 {
-      font-size:28px;
-      margin:0;
-      color:var(--primary);
+      text-align: center;
+      margin-bottom: 30px;
+      color: #ffd166;
     }
-@@ -261,79 +283,80 @@
-      color:var(--primary);
+
+    .top-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 30px;
     }
-    .top-clients {
-      list-style:none;
-      padding:0;
-      margin:0;
-      display:flex;
-      flex-direction:column;
-      gap:14px;
+
+    input, button {
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 16px;
+      border: none;
+      outline: none;
     }
-    .top-clients li {
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      padding:14px 16px;
-      background:#fff6f2;
-      border-radius:14px;
-      font-size:14px;
+
+    input {
+      min-width: 200px;
+      border: 1px solid #ddd;
     }
-    .top-clients span { color:var(--muted); }
-    .notes textarea { min-height:120px; }
+
+    button {
+      background-color: #ffd166;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #ffb700;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(8px);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    th, td {
+      padding: 14px;
+      text-align: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    th {
+      background-color: rgba(255,255,255,0.1);
+      color: #ffd166;
+    }
+
+    tr:hover {
+      background-color: rgba(255,255,255,0.05);
+    }
+
+    .action-btn {
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: none;
+      font-size: 14px;
+      margin: 2px;
+      cursor: pointer;
+    }
+
+    .edit { background-color: #ffc107; color: #000; }
+    .edit:hover { background-color: #e0a800; }
+
+    .delete { background-color: #dc3545; color: #fff; }
+    .delete:hover { background-color: #bd2130; }
+
+    .view { background-color: #28a745; color: #fff; }
+    .view:hover { background-color: #218838; }
+
+    @media(max-width: 768px) {
+      table, thead, tbody, th, td, tr {
+        display: block;
+        width: 100%;
+      }
+      tr {
+        margin-bottom: 15px;
+        background: rgba(255,255,255,0.04);
+        border-radius: 12px;
+        padding: 10px;
+      }
+      th {
+        display: none;
+      }
+      td {
+        text-align: right;
+        padding: 8px 12px;
+        position: relative;
+      }
+      td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        display: block;
+        color: #ffd166;
+        margin-bottom: 4px;
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="page">
-    <div class="back-container"><a href="#" class="back-button" onclick="history.back(); return false;">🔙 رجوع</a></div>
-    <header>
-      <div class="brand">
-        <img src="your-logo.jpeg" alt="Ghadeer Logistics logo">
-        <div>
-          <h1>لوحة تحكم الحسابات</h1>
-          <p>متابعة مالية كاملة لعملاء Ghadeer Logistics</p>
-        </div>
-      </div>
-      <div class="quick-actions">
-        <button class="btn btn-secondary" type="button" id="seedData">تحميل بيانات تجريبية</button>
-        <button class="btn btn-primary" type="button" onclick="exportCSV()">تصدير تقرير CSV</button>
-      </div>
-    </header>
 
-    <section class="summary-grid">
-      <article class="summary-card">
-        <h3>عدد العملاء النشطين</h3>
-        <strong id="metricClients">0</strong>
-        <span>👥 عملاء موثقون</span>
-      </article>
-      <article class="summary-card">
-        <h3>إجمالي الفواتير</h3>
-        <strong id="metricInvoices">0</strong>
-        <span>📑 فواتير مسجلة</span>
-      </article>
-      <article class="summary-card">
-        <h3>إجمالي المبالغ</h3>
-        <strong id="metricAmount">0</strong>
-        <span>💵 دولار أمريكي</span>
-      </article>
-      <article class="summary-card">
-        <h3>متوسط قيمة الفاتورة</h3>
-        <strong id="metricAverage">0</strong>
-        <span>⚖️ مؤشر متوسط</span>
-      </article>
-    </section>
+  <h1>📋 إدارة العملاء</h1>
 
-    <div class="workspace">
-      <section class="panel">
-        <h2>إدارة العملاء والفواتير</h2>
-        <div class="filters">
-          <input type="text" id="search" placeholder="🔍 بحث باسم العميل...">
-          <select id="sort">
-            <option value="">↕️ ترتيب افتراضي</option>
-            <option value="nameAsc">🔤 الاسم (أ-ي)</option>
-            <option value="nameDesc">🔤 الاسم (ي-أ)</option>
-            <option value="invoices">📑 حسب عدد الفواتير</option>
-            <option value="total">💰 حسب أعلى مبلغ</option>
-          </select>
-        </div>
-        <div class="table-wrapper">
-          <table>
-            <thead>
-              <tr>
-        <h3>متوسط قيمة الفاتورة</h3>
-        <strong id="metricAverage">0</strong>
-        <span>⚖️ مؤشر متوسط</span>
-      </article>
-    </section>
-
-    <div class="workspace">
-      <section class="panel">
-        <h2>إدارة العملاء والفواتير</h2>
-        <div class="filters">
-          <input type="text" id="search" placeholder="🔍 بحث باسم العميل...">
-          <select id="sort">
-            <option value="">↕️ ترتيب افتراضي</option>
-            <option value="nameAsc">🔤 الاسم (أ-ي)</option>
-            <option value="nameDesc">🔤 الاسم (ي-أ)</option>
-            <option value="invoices">📑 حسب عدد الفواتير</option>
-            <option value="total">💰 حسب أعلى مبلغ</option>
-          </select>
-        </div>
-        <div class="table-wrapper">
-          <table>
-            <thead>
-              <tr>
-                <th>العميل</th>
-                <th>عدد الفواتير</th>
-                <th>إجمالي المبالغ</th>
-                <th>ملاحظات</th>
-                <th>خيارات</th>
-              </tr>
-            </thead>
-            <tbody id="clients"></tbody>
-          </table>
-          <div class="empty-state" id="emptyState" hidden>
-            لا توجد بيانات بعد. ابدأ بإضافة عملاء أو حمّل بيانات تجريبية.
-          </div>
-        </div>
-      </section>
-
-      <aside class="aside">
-        <section class="panel">
-          <h2>إضافة عميل جديد</h2>
-          <form id="clientForm">
-            <label for="clientName">اسم العميل</label>
-            <input type="text" id="clientName" placeholder="أدخل اسم العميل" required>
-
-            <label for="clientNotes">ملاحظات إضافية</label>
-            <textarea id="clientNotes" placeholder="أكتب نبذة عن العميل أو طبيعة التعامل"></textarea>
-
-            <button class="btn btn-primary" type="submit">➕ إضافة العميل</button>
-          </form>
-        </section>
-
-        <section class="list-card">
-          <h3>أعلى العملاء حسب الإيراد</h3>
-          <ul class="top-clients" id="topClients">
-            <li>لا يوجد بيانات بعد<span>--</span></li>
-          </ul>
-        </section>
-
-        <section class="list-card notes">
-          <h3>ملاحظات الفريق</h3>
-          <textarea placeholder="دوّن ملاحظاتك السريعة حول الحسابات..." id="teamNotes"></textarea>
-        </section>
-      </aside>
-    </div>
+  <div class="top-bar">
+    <form id="clientForm" onsubmit="addClient(event)">
+      <input type="text" id="clientName" placeholder="👤 اسم العميل" required>
+      <button type="submit">➕ إضافة عميل</button>
+    </form>
+    <input type="text" id="search" placeholder="🔍 بحث عن عميل..." oninput="render()">
   </div>
 
-  <script>
-    let accounts = JSON.parse(localStorage.getItem("accounts")) || {};
-    const notesKey = "accounts-notes";
-    const clientNotesKey = "client-notes-map";
-    let clientNotesMap = JSON.parse(localStorage.getItem(clientNotesKey)) || {};
+  <table>
+    <thead>
+      <tr>
+        <th>👤 العميل</th>
+        <th>📑 عدد الفواتير</th>
+        <th>💰 مجموع الحساب</th>
+        <th>⚙️ خيارات</th>
+      </tr>
+    </thead>
+    <tbody id="clients"></tbody>
+  </table>
 
-    const searchInput = document.getElementById("search");
-    const sortSelect = document.getElementById("sort");
-    const clientsBody = document.getElementById("clients");
-    const emptyState = document.getElementById("emptyState");
-    const topClientsList = document.getElementById("topClients");
-    const teamNotes = document.getElementById("teamNotes");
+<script>
+let accounts = JSON.parse(localStorage.getItem("accounts")) || {};
 
-    teamNotes.value = localStorage.getItem(notesKey) || "";
-    teamNotes.addEventListener("input", () => {
-      localStorage.setItem(notesKey, teamNotes.value);
-    });
+function render(){
+  const tbody = document.getElementById("clients");
+  tbody.innerHTML = "";
+  const query = document.getElementById("search").value.trim();
+  for(const client in accounts){
+    if(query && !client.includes(query)) continue;
+    let total = accounts[client].reduce((s,e)=>s+Number(e.price),0);
+    let tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td data-label="👤 العميل">${client}</td>
+      <td data-label="📑 عدد الفواتير">${accounts[client].length}</td>
+      <td data-label="💰 مجموع الحساب">${total.toLocaleString("en-US")}</td>
+      <td data-label="⚙️ خيارات">
+        <button class="action-btn view" onclick="viewClient('${client}')">👁️ عرض</button>
+        <button class="action-btn edit" onclick="editClient('${client}')">✏️ تعديل</button>
+        <button class="action-btn delete" onclick="deleteClient('${client}')">🗑️ حذف</button>
+      </td>`;
+    tbody.appendChild(tr);
+  }
+}
 
-    document.getElementById("clientForm").addEventListener("submit", addClient);
-    searchInput.addEventListener("input", render);
-    sortSelect.addEventListener("change", render);
-    document.getElementById("seedData").addEventListener("click", seedDemoData);
+function addClient(e){
+  e.preventDefault();
+  const name = document.getElementById("clientName").value.trim();
+  if(!name) return;
+  if(!accounts[name]) accounts[name] = [];
+  localStorage.setItem("accounts", JSON.stringify(accounts));
+  render();
+  document.getElementById("clientForm").reset();
+}
 
-    function render(){
-      clientsBody.innerHTML = "";
-      const query = searchInput.value.trim();
-      let clients = Object.keys(accounts);
+function viewClient(name){
+  window.location.href = "client.html?name=" + encodeURIComponent(name);
+}
 
-      if(query){
-        clients = clients.filter(name => name.includes(query));
-      }
-
-      const sortValue = sortSelect.value;
-      clients.sort((a,b) => {
-        if(sortValue === "nameAsc") return a.localeCompare(b);
-        if(sortValue === "nameDesc") return b.localeCompare(a);
-        if(sortValue === "invoices") return accounts[b].length - accounts[a].length;
-        if(sortValue === "total"){
-          const totalA = totalAmountFor(a);
-          const totalB = totalAmountFor(b);
-          return totalB - totalA;
-        }
-        return 0;
-      });
-
-      if(clients.length === 0){
-        emptyState.hidden = false;
-      } else {
-        emptyState.hidden = true;
-      }
-
-        for(const client of clients){
-          const invoices = accounts[client];
-          const total = totalAmountFor(client);
-          const note = clientNotesMap[client];
-          const tr = document.createElement("tr");
-
-          const nameCell = document.createElement("td");
-          const strong = document.createElement("strong");
-          strong.textContent = client;
-          nameCell.appendChild(strong);
-          tr.appendChild(nameCell);
-
-          const invoiceCell = document.createElement("td");
-          const invoiceTag = document.createElement("span");
-          invoiceTag.className = "tag";
-          invoiceTag.textContent = invoices.length;
-          invoiceCell.appendChild(invoiceTag);
-          tr.appendChild(invoiceCell);
-
-          const totalCell = document.createElement("td");
-          totalCell.textContent = formatCurrency(total);
-          tr.appendChild(totalCell);
-
-          const noteCell = document.createElement("td");
-          if(note){
-            const notePill = document.createElement("span");
-            notePill.className = "note-pill";
-            notePill.textContent = notePreview(note);
-            notePill.title = note;
-            noteCell.appendChild(notePill);
-          } else {
-            noteCell.textContent = "--";
-          }
-          tr.appendChild(noteCell);
-
-          const actionsCell = document.createElement("td");
-          const actionsWrapper = document.createElement("div");
-          actionsWrapper.className = "actions";
-
-          const viewButton = document.createElement("button");
-          viewButton.type = "button";
-          viewButton.className = "action-btn view";
-          viewButton.textContent = "عرض";
-          viewButton.addEventListener("click", () => viewClient(client));
-          actionsWrapper.appendChild(viewButton);
-
-          const editButton = document.createElement("button");
-          editButton.type = "button";
-          editButton.className = "action-btn edit";
-          editButton.textContent = "تعديل";
-          editButton.addEventListener("click", () => editClient(client));
-          actionsWrapper.appendChild(editButton);
-
-          const deleteButton = document.createElement("button");
-          deleteButton.type = "button";
-          deleteButton.className = "action-btn delete";
-          deleteButton.textContent = "حذف";
-          deleteButton.addEventListener("click", () => deleteClient(client));
-          actionsWrapper.appendChild(deleteButton);
-
-          actionsCell.appendChild(actionsWrapper);
-          tr.appendChild(actionsCell);
-
-          clientsBody.appendChild(tr);
-        }
-
-      updateMetrics();
-      renderTopClients();
-    }
-
-    function addClient(event){
-      event.preventDefault();
-      const name = document.getElementById("clientName").value.trim();
-      if(!name) return;
-      const noteValue = document.getElementById("clientNotes").value.trim();
-      if(!accounts[name]){
-        accounts[name] = [];
-      }
-      if(noteValue){
-        clientNotesMap[name] = noteValue;
-      } else if(clientNotesMap[name]){
-        delete clientNotesMap[name];
-      }
-      localStorage.setItem("accounts", JSON.stringify(accounts));
-      localStorage.setItem(clientNotesKey, JSON.stringify(clientNotesMap));
-      event.target.reset();
-      render();
-    }
-
-    function viewClient(name){
-      window.location.href = "client.html?name=" + encodeURIComponent(name);
-    }
-
-    function editClient(oldName){
-      const newName = prompt("أدخل الاسم الجديد للعميل:", oldName);
-      if(newName && newName !== oldName){
-        accounts[newName] = accounts[oldName];
-        delete accounts[oldName];
-        if(clientNotesMap[oldName]){
-          clientNotesMap[newName] = clientNotesMap[oldName];
-          delete clientNotesMap[oldName];
-        }
-        localStorage.setItem("accounts", JSON.stringify(accounts));
-        localStorage.setItem(clientNotesKey, JSON.stringify(clientNotesMap));
-        render();
-      }
-    }
-
-    function deleteClient(name){
-      if(confirm("هل تريد حذف العميل " + name + " وجميع بياناته؟")){
-        delete accounts[name];
-        if(clientNotesMap[name]){
-          delete clientNotesMap[name];
-          localStorage.setItem(clientNotesKey, JSON.stringify(clientNotesMap));
-        }
-        localStorage.setItem("accounts", JSON.stringify(accounts));
-        render();
-      }
-    }
-
-    function exportCSV(){
-      const rows = [["العميل","عدد الفواتير","إجمالي المبالغ","ملاحظات"]];
-      for(const client in accounts){
-        const invoices = accounts[client];
-        const total = invoices.reduce((sum, invoice) => sum + Number(invoice.price || 0), 0);
-        const note = clientNotesMap[client] ? clientNotesMap[client].replace(/\n/g, " ") : "";
-        rows.push([client, invoices.length, total, note]);
-      }
-      const csvContent = rows.map(row => row.join(",")).join("\n");
-      const blob = new Blob([csvContent], { type:"text/csv;charset=utf-8;" });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = "accounts-report.csv";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
-    }
-
-    function totalAmountFor(client){
-      return accounts[client].reduce((sum, invoice) => sum + Number(invoice.price || 0), 0);
-    }
-
-    function formatCurrency(value){
-      return Number(value || 0).toLocaleString("ar-SA", { style:"currency", currency:"SAR" });
-    }
-
-    function updateMetrics(){
-      const clientCount = Object.keys(accounts).length;
-      let invoiceCount = 0;
-      let totalAmount = 0;
-      for(const client in accounts){
-        const invoices = accounts[client];
-        invoiceCount += invoices.length;
-        totalAmount += invoices.reduce((sum, invoice) => sum + Number(invoice.price || 0), 0);
-      }
-      const average = invoiceCount ? totalAmount / invoiceCount : 0;
-      document.getElementById("metricClients").textContent = clientCount.toLocaleString("ar-SA");
-      document.getElementById("metricInvoices").textContent = invoiceCount.toLocaleString("ar-SA");
-      document.getElementById("metricAmount").textContent = formatCurrency(totalAmount);
-      document.getElementById("metricAverage").textContent = formatCurrency(average);
-    }
-
-    function renderTopClients(){
-      const entries = Object.entries(accounts).map(([name, invoices]) => {
-        return { name, total: invoices.reduce((sum, invoice) => sum + Number(invoice.price || 0), 0) };
-      }).filter(item => item.total > 0);
-      entries.sort((a,b) => b.total - a.total);
-      topClientsList.innerHTML = "";
-      if(entries.length === 0){
-        const li = document.createElement("li");
-        li.innerHTML = "لا يوجد بيانات بعد<span>--</span>";
-        topClientsList.appendChild(li);
-        return;
-      }
-      for(const item of entries.slice(0,5)){
-        const li = document.createElement("li");
-        li.innerHTML = `<strong>${item.name}</strong><span>${formatCurrency(item.total)}</span>`;
-        topClientsList.appendChild(li);
-      }
-    }
-
-    function seedDemoData(){
-      accounts = {
-        "شركة شمال البحر": [
-          { invoice:"INV-001", price: 4200 },
-          { invoice:"INV-014", price: 3600 },
-          { invoice:"INV-028", price: 6900 }
-        ],
-        "مؤسسة الميناء الحديث": [
-          { invoice:"INV-004", price: 1800 },
-          { invoice:"INV-051", price: 2400 }
-        ],
-        "تحالف الخليج اللوجستي": [
-          { invoice:"INV-019", price: 9500 },
-          { invoice:"INV-121", price: 7200 },
-          { invoice:"INV-177", price: 5300 },
-          { invoice:"INV-190", price: 2800 }
-        ],
-        "حلول النور للملاحة": [
-          { invoice:"INV-031", price: 3100 }
-        ],
-        "شركة المسار الذكي": [
-          { invoice:"INV-211", price: 8700 },
-          { invoice:"INV-212", price: 6500 }
-        ]
-      };
-      clientNotesMap = {
-        "شركة شمال البحر": "عميل استراتيجي مع شحنات شهرية ثابتة.",
-        "مؤسسة الميناء الحديث": "يحتاج لتقارير أسبوعية تفصيلية.",
-        "تحالف الخليج اللوجستي": "أكبر عميل من ناحية حجم الشحنات.",
-        "حلول النور للملاحة": "عميل جديد قيد المتابعة.",
-        "شركة المسار الذكي": "يتم الدفع بآلية تحويل بنكي كل 10 أيام."
-      };
-      localStorage.setItem("accounts", JSON.stringify(accounts));
-      localStorage.setItem(clientNotesKey, JSON.stringify(clientNotesMap));
-      render();
-    }
-
-    function notePreview(note){
-      if(note.length <= 22) return note;
-      return note.slice(0, 22) + "...";
-    }
-
+function editClient(oldName){
+  const newName = prompt("أدخل الاسم الجديد للعميل:", oldName);
+  if(newName && newName !== oldName){
+    accounts[newName] = accounts[oldName];
+    delete accounts[oldName];
+    localStorage.setItem("accounts", JSON.stringify(accounts));
     render();
-  </script>
+  }
+}
+
+function deleteClient(name){
+  if(confirm("هل تريد حذف العميل " + name + " مع جميع فواتيره؟")){
+    delete accounts[name];
+    localStorage.setItem("accounts", JSON.stringify(accounts));
+    render();
+  }
+}
+
+render();
+</script>
 </body>
 </html>
