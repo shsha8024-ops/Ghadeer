@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>التقارير - Ghadeer Logistics</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="assets/script.js" defer></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Cairo', sans-serif;
+      display: flex;
+      background: linear-gradient(135deg, #2c2c54, #474787);
+      color: #fff;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-left: 5px solid #ffd166;
+      width: 260px;
+      padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    .sidebar h2 {
+      font-size: 1.5em;
+      color: #ffd166;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .sidebar a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 10px 15px;
+      border-radius: 12px;
+      display: block;
+      transition: background 0.3s;
+    }
+
+    .sidebar a:hover,
+    .sidebar a.active {
+      background-color: #ffd166;
+      color: #000;
+    }
+
+    .content {
+      flex: 1;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    h1 {
+      font-size: 2em;
+      color: #ffd166;
+    }
+
+    button {
+      background-color: #ffd166;
+      color: #000;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      width: fit-content;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #ffb700;
+    }
+
+    .report-preview {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(10px);
+    }
+
+    .report-preview h2 {
+      margin-bottom: 20px;
+      color: #ffffff;
+    }
+
+    .report-preview ul {
+      list-style: none;
+      padding: 0;
+      font-size: 1.1em;
+      line-height: 2em;
+    }
+
+    .report-preview li {
+      background: rgba(0, 0, 0, 0.1);
+      margin-bottom: 10px;
+      padding: 10px 15px;
+      border-radius: 12px;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-around;
+        border-left: none;
+        border-top: 5px solid #ffd166;
+      }
+      .content {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <aside class="sidebar">
+    <h2>Ghadeer Logistics</h2>
+    <ul>
+      <li><a href="dashboard.html">📊 لوحة التحكم</a></li>
+      <li><a href="accounts.html">👥 العملاء</a></li>
+      <li><a href="track.html">🚛 تتبع الشحنات</a></li>
+      <li><a href="reports.html" class="active">📑 التقارير</a></li>
+    </ul>
+  </aside>
+
+  <main class="content">
+    <h1>📑 التقارير</h1>
+    <p>يمكنك توليد تقرير شهري عن الشحنات والعملاء.</p>
+    <button onclick="generateReport()">تنزيل التقرير PDF</button>
+
+    <section class="report-preview">
+      <h2>معاينة التقرير</h2>
+      <div id="reportContent">
+        <h3>تقرير الشحنات - أكتوبر 2025</h3>
+        <ul>
+          <li>📦 شحنات نشطة: 12</li>
+          <li>✅ شحنات مكتملة: 30</li>
+          <li>👥 عدد العملاء: 45</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
