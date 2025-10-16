@@ -1,11 +1,88 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head><meta charset="UTF-8"><title>اتصل بنا</title>
-<style>body{font-family:'Cairo';background:#f5f6fa;padding:30px;}h1{color:#cc3300;text-align:center;}form,section{max-width:500px;margin:20px auto;background:#fff;padding:20px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.1);}label{display:block;margin-top:10px;}input,textarea,button{width:100%;padding:10px;margin-top:6px;border-radius:8px;border:1px solid #ccc;}button{background:#cc3300;color:#fff;border:none;cursor:pointer;}button:hover{background:#ff5500;}.back-container{text-align:right;margin-bottom:20px;}.back-button{display:inline-flex;align-items:center;gap:6px;background:#003366;color:#fff;padding:10px 18px;border-radius:999px;text-decoration:none;font-weight:600;box-shadow:0 4px 10px rgba(0,0,0,0.15);transition:transform .2s ease,box-shadow .2s ease,background .2s ease;}.back-button:hover{background:#005599;transform:translateY(-2px);box-shadow:0 6px 14px rgba(0,0,0,0.18);}</style>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ghadeer Logistics | تواصل معنا</title>
+  <link rel="stylesheet" href="assets/css/theme.css">
 </head>
 <body>
-<div class="back-container"><a href="#" class="back-button" onclick="history.back(); return false;">🔙 رجوع</a></div>
-<h1>اتصل بنا</h1>
-<form><label>الاسم:</label><input type="text"><label>البريد الإلكتروني:</label><input type="email"><label>الرسالة:</label><textarea></textarea><button>إرسال</button></form>
-<section><ul><li>📱 <strong>750-408-4359</strong></li><li>📱 <strong>777-008-9407</strong></li><li>📧 <strong>Abdulstarzeki@email.com</strong></li><li>📍 <strong>كردستان – العراق</strong></li></ul><p>نحن متواجدون لخدمتكم على مدار الساعة. لا تتردد في التواصل معنا لأي استفسار أو طلب شحنة.</p></section>
-</body></html>
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-mark">GL</div>
+      <h1>Ghadeer Logistics</h1>
+    </div>
+    <nav class="nav-links">
+      <a class="nav-link" href="Home.html">الرئيسية</a>
+      <a class="nav-link" href="about.html">عن الشركة</a>
+      <a class="nav-link" href="dashboard.html">لوحة التحكم</a>
+      <a class="nav-link" href="accounts.html">الحسابات</a>
+      <a class="nav-link" href="track.html">تتبع الشحنات</a>
+      <a class="nav-link" href="Reportal.html">التقارير</a>
+      <a class="nav-link active" href="contact.html">اتصل بنا</a>
+      <a class="nav-link" href="index.html">تسجيل الدخول</a>
+    </nav>
+  </header>
+
+  <main class="page-shell">
+    <section class="glass-card hero-card">
+      <h2 class="page-title">تواصل معنا</h2>
+      <p class="lead">يسر فريق خدمة العملاء مساعدتك في أي وقت. اترك لنا رسالة أو تواصل مباشرة عبر قنوات الاتصال الموضحة.</p>
+      <div class="chip-row">
+        <span class="chip">⏰ دعم 24/7</span>
+        <span class="chip">📍 مكاتبنا في أربيل</span>
+        <span class="chip">💬 فريق متعدد اللغات</span>
+      </div>
+    </section>
+
+    <section class="glass-card">
+      <div class="section-heading">
+        <div>
+          <h2>ارسل رسالة</h2>
+          <p>املأ التفاصيل التالية ليصلك الرد خلال ساعات قليلة.</p>
+        </div>
+      </div>
+      <form class="form-grid" onsubmit="event.preventDefault();">
+        <div>
+          <label for="name">الاسم</label>
+          <input id="name" type="text" placeholder="الاسم الكامل">
+        </div>
+        <div>
+          <label for="email">البريد الإلكتروني</label>
+          <input id="email" type="email" placeholder="name@example.com">
+        </div>
+        <div>
+          <label for="topic">موضوع الرسالة</label>
+          <input id="topic" type="text" placeholder="متابعة شحنة، شراكة، استفسار...">
+        </div>
+        <div>
+          <label for="message">الرسالة</label>
+          <textarea id="message" placeholder="أخبرنا عن التفاصيل التي نحتاجها لخدمتك."></textarea>
+        </div>
+        <button class="button primary" type="submit">إرسال الرسالة</button>
+      </form>
+    </section>
+
+    <section class="cards-grid">
+      <article class="info-card">
+        <h3>الهاتف</h3>
+        <p>📱 750-408-4359<br>📱 777-008-9407</p>
+      </article>
+      <article class="info-card">
+        <h3>البريد الإلكتروني</h3>
+        <p>📧 Abdulstarzeki@email.com<br>📧 support@ghadeer-logistics.com</p>
+      </article>
+      <article class="info-card">
+        <h3>العنوان</h3>
+        <p>📍 كردستان – العراق<br>مركز Ghadeer اللوجستي، المنطقة الصناعية - أربيل.</p>
+      </article>
+      <article class="info-card">
+        <h3>قنوات إضافية</h3>
+        <p>💬 واتساب مخصص للشركات<br>🤝 فريق الشراكات متواجد لاجتماعات مباشرة.</p>
+      </article>
+    </section>
+
+    <p class="footer-note">نحن هنا لخدمتكم. شكراً لثقتكم بـ Ghadeer Logistics.</p>
+  </main>
+</body>
+</html>

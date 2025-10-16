@@ -2,165 +2,137 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>Ghadeer Logistics - لوحة التحكم</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
-
-    body {
-      font-family: 'Cairo', sans-serif;
-      background: linear-gradient(135deg, #1b1b2f, #162447);
-      color: #fff;
-      min-height: 100vh;
-    }
-
-    .sidebar {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(10px);
-      min-height: 100vh;
-      padding: 30px 20px;
-      border-left: 4px solid #ffd166;
-    }
-
-    .sidebar h3 {
-      font-weight: bold;
-      color: #ffd166;
-      margin-bottom: 30px;
-      text-align: center;
-    }
-
-    .sidebar a {
-      color: #fff;
-      text-decoration: none;
-      margin: 15px 0;
-      display: block;
-      padding: 10px 15px;
-      border-radius: 12px;
-      transition: 0.3s;
-    }
-
-    .sidebar a:hover {
-      background-color: #ffd166;
-      color: #000;
-    }
-
-    h1 {
-      color: #ffd166;
-    }
-
-    .card {
-      background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(8px);
-      border: none;
-      border-radius: 16px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-      color: #fff;
-      transition: transform 0.2s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-5px);
-    }
-
-    .card h5 {
-      font-size: 1.2rem;
-      color: #ffd166;
-    }
-
-    .card h2 {
-      font-size: 2.5rem;
-      margin: 0;
-    }
-
-    canvas {
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 12px;
-      padding: 10px;
-    }
-
-    @media (max-width: 768px) {
-      .sidebar {
-        min-height: auto;
-        border-left: none;
-        border-top: 4px solid #ffd166;
-        flex-direction: row;
-        justify-content: space-around;
+  <title>Ghadeer Logistics | لوحة التحكم</title>
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+  <script defer>
+    document.addEventListener('DOMContentLoaded', () => {
+      const canvas = document.getElementById('shipmentsChart');
+      if (!canvas || !window.Chart) {
+        return;
       }
-    }
-  </style>
+
+      const context = canvas.getContext('2d');
+      new Chart(context, {
+        type: 'line',
+        data: {
+          labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو'],
+          datasets: [{
+            label: 'عدد الشحنات',
+            data: [12, 19, 15, 22, 30, 40],
+            borderColor: '#38e0ff',
+            backgroundColor: 'rgba(34, 211, 238, 0.25)',
+            fill: true,
+            tension: 0.38,
+            borderWidth: 2
+          }]
+        },
+        options: {
+          plugins: {
+            legend: {
+              labels: {
+                color: '#f5f7ff',
+                font: {
+                  family: 'Cairo',
+                  size: 14
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              ticks: { color: '#d1d6f5' },
+              grid: { color: 'rgba(209, 214, 245, 0.08)' }
+            },
+            y: {
+              ticks: { color: '#d1d6f5' },
+              grid: { color: 'rgba(209, 214, 245, 0.08)' }
+            }
+          }
+        }
+      });
+    });
+  </script>
 </head>
 <body>
-<div class="container-fluid">
-  <div class="row">
-    <!-- Sidebar -->
-    <div class="col-md-2 sidebar">
-      <h3>Ghadeer Logistics</h3>
-      <a href="#">📊 لوحة التحكم</a>
-      <a href="#">👥 العملاء</a>
-      <a href="#">🚛 الشحنات</a>
-      <a href="#">📑 التقارير</a>
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-mark">GL</div>
+      <h1>Ghadeer Logistics</h1>
     </div>
+    <nav class="nav-links">
+      <a class="nav-link" href="Home.html">الرئيسية</a>
+      <a class="nav-link" href="about.html">عن الشركة</a>
+      <a class="nav-link active" href="dashboard.html">لوحة التحكم</a>
+      <a class="nav-link" href="accounts.html">الحسابات</a>
+      <a class="nav-link" href="track.html">تتبع الشحنات</a>
+      <a class="nav-link" href="Reportal.html">التقارير</a>
+      <a class="nav-link" href="contact.html">اتصل بنا</a>
+      <a class="nav-link" href="index.html">تسجيل الدخول</a>
+    </nav>
+  </header>
 
-    <!-- Main Content -->
-    <div class="col-md-10 p-4">
-      <h1 class="mb-4">لوحة التحكم</h1>
-      <div class="row g-4">
-        <div class="col-md-4">
-          <div class="card text-center p-4">
-            <h5>📦 الشحنات النشطة</h5>
-            <h2 id="activeCount">12</h2>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card text-center p-4">
-            <h5>✅ المكتملة</h5>
-            <h2 id="doneCount">30</h2>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card text-center p-4">
-            <h5>👥 العملاء</h5>
-            <h2 id="clientsCount">45</h2>
-          </div>
+  <main class="page-shell">
+    <section class="glass-card hero-card">
+      <h2 class="page-title">لوحة القيادة التنفيذية</h2>
+      <p class="lead">نظرة شاملة على أداء عمليات Ghadeer من حيث الشحنات، العملاء، وسرعة التنفيذ.</p>
+      <div class="chip-row">
+        <span class="chip">📦 38 شحنة نشطة</span>
+        <span class="chip">✅ 30 شحنة مكتملة</span>
+        <span class="chip">👥 45 عميلًا نشطًا</span>
+      </div>
+    </section>
+
+    <section class="stats-grid">
+      <div class="glass-card stat-card">
+        <p class="stat-label">متوسط زمن التسليم</p>
+        <p class="stat-value">36 ساعة</p>
+        <span class="stat-trend">▲ تحسن 6%</span>
+      </div>
+      <div class="glass-card stat-card">
+        <p class="stat-label">نسبة الالتزام بالمواعيد</p>
+        <p class="stat-value">94%</p>
+        <span class="stat-trend success">↑ ممتاز</span>
+      </div>
+      <div class="glass-card stat-card">
+        <p class="stat-label">إجمالي الإيراد الشهري</p>
+        <p class="stat-value">145M د.ع</p>
+        <span class="stat-trend">▲ +12% مقارنة بالشهر الماضي</span>
+      </div>
+      <div class="glass-card stat-card">
+        <p class="stat-label">مؤشر رضا العملاء</p>
+        <p class="stat-value">4.8/5</p>
+        <span class="stat-trend success">⭐ ملاحظات إيجابية</span>
+      </div>
+    </section>
+
+    <section class="glass-card">
+      <div class="section-heading">
+        <div>
+          <h2>إحصائيات الشحنات</h2>
+          <p>تطور عدد الشحنات خلال الأشهر الستة الأخيرة.</p>
         </div>
       </div>
+      <canvas id="shipmentsChart" height="220"></canvas>
+    </section>
 
-      <!-- Chart -->
-      <div class="card mt-5 p-4">
-        <h5>📈 إحصائيات الشحنات</h5>
-        <canvas id="shipmentsChart"></canvas>
-      </div>
-    </div>
-  </div>
-</div>
+    <section class="cards-grid">
+      <article class="info-card">
+        <h3>الشحنات المتأخرة</h3>
+        <p>3 شحنات تحتاج إلى متابعة إضافية مع فرق التخليص الجمركي.</p>
+      </article>
+      <article class="info-card">
+        <h3>أهم العملاء</h3>
+        <p>شركة شمال كردستان، أسواق أربيل، وشركة الطيف اللوجستية.</p>
+      </article>
+      <article class="info-card">
+        <h3>الإجراءات القادمة</h3>
+        <p>توقيع عقود موسعة، تحديث أسطول الشاحنات، وإطلاق مركز دعم جديد.</p>
+      </article>
+    </section>
 
-<script>
-const ctx = document.getElementById('shipmentsChart');
-new Chart(ctx, {
-  type: 'line',
-  data: {
-    labels: ['يناير','فبراير','مارس','أبريل','مايو','يونيو'],
-    datasets: [{
-      label: 'عدد الشحنات',
-      data: [12, 19, 15, 22, 30, 40],
-      borderColor: '#ffd166',
-      backgroundColor: 'rgba(255,209,102,0.2)',
-      fill: true,
-      tension: 0.4
-    }]
-  },
-  options: {
-    plugins: {
-      legend: { labels: { color: '#fff' } }
-    },
-    scales: {
-      x: { ticks: { color: '#fff' }, grid: { color: 'rgba(255,255,255,0.1)' } },
-      y: { ticks: { color: '#fff' }, grid: { color: 'rgba(255,255,255,0.1)' } }
-    }
-  }
-});
-</script>
+    <p class="footer-note">لوحة التحكم الداخلية لـ Ghadeer Logistics - بيانات تجريبية للتوضيح.</p>
+  </main>
 </body>
 </html>
