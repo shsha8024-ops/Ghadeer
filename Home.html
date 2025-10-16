@@ -2,52 +2,96 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>Ghadeer Logistics</title>
-  <style>
-    body { font-family:'Cairo',sans-serif; margin:0; background:#f5f6fa; text-align:center; color:#333; }
-    .back-container { text-align:right; padding:20px; }
-    .back-button {
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      background:#003366;
-      color:#fff;
-      padding:10px 18px;
-      border-radius:999px;
-      text-decoration:none;
-      font-weight:600;
-      box-shadow:0 4px 10px rgba(0,0,0,0.15);
-      transition:transform .2s ease, box-shadow .2s ease, background .2s ease;
-    }
-    .back-button:hover {
-      background:#005599;
-      transform:translateY(-2px);
-      box-shadow:0 6px 14px rgba(0,0,0,0.18);
-    }
-    header { background:#003366; color:#fff; padding:20px; }
-    nav a { margin:0 15px; color:#fff; text-decoration:none; font-weight:bold; }
-    main { padding:40px; }
-    h1 { color:#cc3300; }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ghadeer Logistics | الرئيسية</title>
+  <link rel="stylesheet" href="assets/css/theme.css">
 </head>
 <body>
-<div class="back-container">
-  <a href="#" class="back-button" onclick="history.back(); return false;">🔙 رجوع</a>
-</div>
-<header>
-  <h1>Ghadeer Logistics</h1>
-  <nav>
-    <a href="index.html">🏠 الرئيسية</a>
-    <a href="about.html">📘 عن الشركة</a>
-    <a href="contact.html">📞 اتصل بنا</a>
-    <a href="track.html">📦 تتبع</a>
-    <a href="accounts.html">💼 الحسابات</a>
-    <a href="login.html">🔐 تسجيل الدخول</a>
-  </nav>
-</header>
-<main>
-  <h1>مرحباً بكم في Ghadeer Logistics</h1>
-  <p>حلول النقل والشحن داخل كردستان والعراق.</p>
-</main>
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-mark">GL</div>
+      <h1>Ghadeer Logistics</h1>
+    </div>
+    <nav class="nav-links">
+      <a class="nav-link active" href="Home.html">الرئيسية</a>
+      <a class="nav-link" href="about.html">عن الشركة</a>
+      <a class="nav-link" href="dashboard.html">لوحة التحكم</a>
+      <a class="nav-link" href="accounts.html">الحسابات</a>
+      <a class="nav-link" href="track.html">تتبع الشحنات</a>
+      <a class="nav-link" href="Reportal.html">التقارير</a>
+      <a class="nav-link" href="contact.html">اتصل بنا</a>
+      <a class="nav-link" href="index.html">تسجيل الدخول</a>
+    </nav>
+  </header>
+
+  <main class="page-shell">
+    <section class="glass-card hero-card">
+      <h2 class="page-title">نقود سلاسل الإمداد بثقة ورؤية مستقبلية</h2>
+      <p class="lead">
+        حلول لوجستية متكاملة تغطي كردستان والعراق مع تتبع لحظي، فرق تشغيل خبيرة، ودعم متواصل على مدار الساعة.
+      </p>
+      <div class="actions-row">
+        <a class="button primary" href="track.html">ابدأ تتبع شحنتك</a>
+        <a class="button ghost" href="contact.html">تواصل مع فريقنا</a>
+      </div>
+      <div class="chip-row">
+        <span class="chip">🚚 +250 شحنة أسبوعيًا</span>
+        <span class="chip">⏱ تتبع لحظي</span>
+        <span class="chip">🛡 تأمين شامل</span>
+      </div>
+    </section>
+
+    <section class="cards-grid">
+      <article class="info-card">
+        <h3>شبكة نقل متطورة</h3>
+        <p>أسطول متكامل داخل كردستان والعراق مع نقاط تجمع ذكية ومسارات محسّنة لضمان سرعة الوصول.</p>
+      </article>
+      <article class="info-card">
+        <h3>إدارة عملاء رقمية</h3>
+        <p>منصة واحدة لإدارة الحسابات والفواتير والتقارير، مع حفظ آمن للبيانات وإمكانية الوصول من أي مكان.</p>
+      </article>
+      <article class="info-card">
+        <h3>فرق تشغيل خبيرة</h3>
+        <p>طاقم متخصص في إدارة الشحنات، التخليص الجمركي، ومتابعة السائقين لضمان تجربة موثوقة لكل عميل.</p>
+      </article>
+      <article class="info-card">
+        <h3>تحليلات لحظية</h3>
+        <p>لوحة معلومات تفاعلية تعرض مؤشرات الأداء الرئيسية لتساعدك على اتخاذ قرارات أسرع وأكثر دقة.</p>
+      </article>
+    </section>
+
+    <section class="glass-card">
+      <div class="section-heading">
+        <div>
+          <h2>أرقام تتحدث</h2>
+          <p>مؤشرات الأداء الرئيسية التي يحققها فريق Ghadeer يوميًا.</p>
+        </div>
+      </div>
+      <div class="cards-grid">
+        <div class="info-card stat-card">
+          <p class="stat-label">شحنات في الطريق</p>
+          <p class="stat-value">38</p>
+          <span class="stat-trend">▲ 8% هذا الأسبوع</span>
+        </div>
+        <div class="info-card stat-card">
+          <p class="stat-label">عمليات مكتملة</p>
+          <p class="stat-value">1,245</p>
+          <span class="stat-trend">▲ 21% هذا الربع</span>
+        </div>
+        <div class="info-card stat-card">
+          <p class="stat-label">رضا العملاء</p>
+          <p class="stat-value">97%</p>
+          <span class="stat-trend success">⭐ موثوقية عالية</span>
+        </div>
+        <div class="info-card stat-card">
+          <p class="stat-label">أزواج المدن المغطاة</p>
+          <p class="stat-value">24</p>
+          <span class="stat-trend">▲ 3 وجهات جديدة</span>
+        </div>
+      </div>
+    </section>
+
+    <p class="footer-note">© 2025 Ghadeer Logistics. جميع الحقوق محفوظة.</p>
+  </main>
 </body>
 </html>

@@ -2,212 +2,152 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>إدارة العملاء - Ghadeer Logistics</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
-
-    * { box-sizing: border-box; }
-    body {
-      font-family: 'Cairo', sans-serif;
-      background: linear-gradient(135deg, #2c003e, #4a0072);
-      margin: 0;
-      padding: 20px;
-      color: #fff;
-    }
-
-    h1 {
-      text-align: center;
-      margin-bottom: 30px;
-      color: #ffd166;
-    }
-
-    .top-bar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: center;
-      margin-bottom: 30px;
-    }
-
-    input, button {
-      padding: 12px;
-      border-radius: 10px;
-      font-size: 16px;
-      border: none;
-      outline: none;
-    }
-
-    input {
-      min-width: 200px;
-      border: 1px solid #ddd;
-    }
-
-    button {
-      background-color: #ffd166;
-      color: #000;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    button:hover {
-      background-color: #ffb700;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(8px);
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-    }
-
-    th, td {
-      padding: 14px;
-      text-align: center;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    th {
-      background-color: rgba(255,255,255,0.1);
-      color: #ffd166;
-    }
-
-    tr:hover {
-      background-color: rgba(255,255,255,0.05);
-    }
-
-    .action-btn {
-      padding: 6px 12px;
-      border-radius: 8px;
-      border: none;
-      font-size: 14px;
-      margin: 2px;
-      cursor: pointer;
-    }
-
-    .edit { background-color: #ffc107; color: #000; }
-    .edit:hover { background-color: #e0a800; }
-
-    .delete { background-color: #dc3545; color: #fff; }
-    .delete:hover { background-color: #bd2130; }
-
-    .view { background-color: #28a745; color: #fff; }
-    .view:hover { background-color: #218838; }
-
-    @media(max-width: 768px) {
-      table, thead, tbody, th, td, tr {
-        display: block;
-        width: 100%;
-      }
-      tr {
-        margin-bottom: 15px;
-        background: rgba(255,255,255,0.04);
-        border-radius: 12px;
-        padding: 10px;
-      }
-      th {
-        display: none;
-      }
-      td {
-        text-align: right;
-        padding: 8px 12px;
-        position: relative;
-      }
-      td::before {
-        content: attr(data-label);
-        font-weight: bold;
-        display: block;
-        color: #ffd166;
-        margin-bottom: 4px;
-      }
-    }
-  </style>
+  <title>Ghadeer Logistics | إدارة العملاء</title>
+  <link rel="stylesheet" href="assets/css/theme.css">
 </head>
 <body>
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-mark">GL</div>
+      <h1>Ghadeer Logistics</h1>
+    </div>
+    <nav class="nav-links">
+      <a class="nav-link" href="Home.html">الرئيسية</a>
+      <a class="nav-link" href="about.html">عن الشركة</a>
+      <a class="nav-link" href="dashboard.html">لوحة التحكم</a>
+      <a class="nav-link active" href="accounts.html">الحسابات</a>
+      <a class="nav-link" href="track.html">تتبع الشحنات</a>
+      <a class="nav-link" href="Reportal.html">التقارير</a>
+      <a class="nav-link" href="contact.html">اتصل بنا</a>
+      <a class="nav-link" href="index.html">تسجيل الدخول</a>
+    </nav>
+  </header>
 
-  <h1>📋 إدارة العملاء</h1>
+  <main class="page-shell">
+    <section class="glass-card hero-card">
+      <h2 class="page-title">إدارة عملاء Ghadeer</h2>
+      <p class="lead">أضف عملاء جدد، راجع حساباتهم، وتابع فواتيرهم من مكان واحد مع مزامنة محلية تلقائية.</p>
+      <div class="chip-row">
+        <span class="chip">💾 تخزين محلي آمن</span>
+        <span class="chip">🔍 بحث فوري</span>
+        <span class="chip">📊 ملخصات مالية</span>
+      </div>
+    </section>
 
-  <div class="top-bar">
-    <form id="clientForm" onsubmit="addClient(event)">
-      <input type="text" id="clientName" placeholder="👤 اسم العميل" required>
-      <button type="submit">➕ إضافة عميل</button>
-    </form>
-    <input type="text" id="search" placeholder="🔍 بحث عن عميل..." oninput="render()">
-  </div>
+    <section class="glass-card table-card">
+      <div class="table-header">
+        <div class="section-heading">
+          <div>
+            <h2>سجل العملاء</h2>
+            <p>أضف عميلًا جديدًا أو قم بالبحث داخل القائمة الحالية.</p>
+          </div>
+        </div>
+        <div class="toolbar">
+          <form id="clientForm" class="form-grid inline" onsubmit="addClient(event)">
+            <div>
+              <label for="clientName">اسم العميل</label>
+              <input type="text" id="clientName" placeholder="مثال: شركة شمال كردستان" required>
+            </div>
+            <button class="button primary" type="submit">➕ إضافة عميل</button>
+          </form>
+          <div>
+            <label for="search">بحث</label>
+            <input type="text" id="search" placeholder="ابحث عن عميل..." oninput="render()">
+          </div>
+        </div>
+      </div>
 
-  <table>
-    <thead>
-      <tr>
-        <th>👤 العميل</th>
-        <th>📑 عدد الفواتير</th>
-        <th>💰 مجموع الحساب</th>
-        <th>⚙️ خيارات</th>
-      </tr>
-    </thead>
-    <tbody id="clients"></tbody>
-  </table>
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>👤 العميل</th>
+              <th>📑 عدد الفواتير</th>
+              <th>💰 مجموع الحساب</th>
+              <th>⚙️ خيارات</th>
+            </tr>
+          </thead>
+          <tbody id="clients"></tbody>
+        </table>
+      </div>
+    </section>
 
-<script>
-let accounts = JSON.parse(localStorage.getItem("accounts")) || {};
+    <p class="footer-note">يتم حفظ البيانات في المتصفح لضمان سرعة الوصول وسهولة الإدارة.</p>
+  </main>
 
-function render(){
-  const tbody = document.getElementById("clients");
-  tbody.innerHTML = "";
-  const query = document.getElementById("search").value.trim();
-  for(const client in accounts){
-    if(query && !client.includes(query)) continue;
-    let total = accounts[client].reduce((s,e)=>s+Number(e.price),0);
-    let tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td data-label="👤 العميل">${client}</td>
-      <td data-label="📑 عدد الفواتير">${accounts[client].length}</td>
-      <td data-label="💰 مجموع الحساب">${total.toLocaleString("en-US")}</td>
-      <td data-label="⚙️ خيارات">
-        <button class="action-btn view" onclick="viewClient('${client}')">👁️ عرض</button>
-        <button class="action-btn edit" onclick="editClient('${client}')">✏️ تعديل</button>
-        <button class="action-btn delete" onclick="deleteClient('${client}')">🗑️ حذف</button>
-      </td>`;
-    tbody.appendChild(tr);
-  }
-}
+  <script>
+    let accounts = JSON.parse(localStorage.getItem('accounts')) || {};
 
-function addClient(e){
-  e.preventDefault();
-  const name = document.getElementById("clientName").value.trim();
-  if(!name) return;
-  if(!accounts[name]) accounts[name] = [];
-  localStorage.setItem("accounts", JSON.stringify(accounts));
-  render();
-  document.getElementById("clientForm").reset();
-}
+    function render() {
+      const tbody = document.getElementById('clients');
+      tbody.innerHTML = '';
+      const query = document.getElementById('search').value.trim();
+      const normalizedQuery = query.toLowerCase();
 
-function viewClient(name){
-  window.location.href = "client.html?name=" + encodeURIComponent(name);
-}
+      Object.keys(accounts).forEach((client) => {
+        const normalizedClient = client.toLowerCase();
+        if (normalizedQuery && !normalizedClient.includes(normalizedQuery)) {
+          return;
+        }
 
-function editClient(oldName){
-  const newName = prompt("أدخل الاسم الجديد للعميل:", oldName);
-  if(newName && newName !== oldName){
-    accounts[newName] = accounts[oldName];
-    delete accounts[oldName];
-    localStorage.setItem("accounts", JSON.stringify(accounts));
+        const invoices = accounts[client];
+        const total = invoices.reduce((sum, entry) => sum + Number(entry.price || 0), 0);
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${client}</td>
+          <td>${invoices.length}</td>
+          <td>${total.toLocaleString('en-US')}</td>
+          <td>
+            <div class="action-buttons">
+              <button class="action-button view" onclick="viewClient('${client}')">👁️ عرض</button>
+              <button class="action-button edit" onclick="editClient('${client}')">✏️ تعديل</button>
+              <button class="action-button delete" onclick="deleteClient('${client}')">🗑️ حذف</button>
+            </div>
+          </td>`;
+        tbody.appendChild(row);
+      });
+    }
+
+    function addClient(event) {
+      event.preventDefault();
+      const nameField = document.getElementById('clientName');
+      const name = nameField.value.trim();
+      if (!name) {
+        return;
+      }
+      if (!accounts[name]) {
+        accounts[name] = [];
+      }
+      localStorage.setItem('accounts', JSON.stringify(accounts));
+      render();
+      event.target.reset();
+      nameField.focus();
+    }
+
+    function viewClient(name) {
+      window.location.href = 'client.html?name=' + encodeURIComponent(name);
+    }
+
+    function editClient(oldName) {
+      const newName = prompt('أدخل الاسم الجديد للعميل:', oldName);
+      if (newName && newName !== oldName) {
+        accounts[newName] = accounts[oldName];
+        delete accounts[oldName];
+        localStorage.setItem('accounts', JSON.stringify(accounts));
+        render();
+      }
+    }
+
+    function deleteClient(name) {
+      if (confirm('هل تريد حذف هذا العميل وجميع فواتيره؟')) {
+        delete accounts[name];
+        localStorage.setItem('accounts', JSON.stringify(accounts));
+        render();
+      }
+    }
+
     render();
-  }
-}
-
-function deleteClient(name){
-  if(confirm("هل تريد حذف العميل " + name + " مع جميع فواتيره؟")){
-    delete accounts[name];
-    localStorage.setItem("accounts", JSON.stringify(accounts));
-    render();
-  }
-}
-
-render();
-</script>
+  </script>
 </body>
 </html>
