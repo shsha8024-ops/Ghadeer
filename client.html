@@ -2,12 +2,21 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>حساب العميل</title>
   <style>
-    body { font-family:'Cairo',sans-serif; background:#eef2f7; margin:0; padding:20px; color:#333; }
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: #eef2f7;
+      margin: 0;
+      min-height: 100vh;
+      padding: clamp(20px, 6vw, 48px) clamp(16px, 6vw, 40px);
+      color: #333;
+    }
     header { text-align:center; }
-    h1 { color:#cc3300; }
-    .back-container { text-align:right; margin-bottom:10px; }
+    h1 { color:#cc3300; margin-bottom: 8px; }
+    .back-container { text-align:right; margin-bottom:16px; }
     .back-button {
       display:inline-flex;
       align-items:center;
@@ -26,11 +35,31 @@
       display:inline-block; margin:10px 0; background:#003366; color:#fff; padding:8px 15px; border-radius:8px; text-decoration:none; font-weight:bold;
     }
     a.back:hover, a.back-bottom:hover { background:#005599; }
-    form { display:grid; grid-template-columns:repeat(4,1fr) auto; gap:10px; margin:20px auto; max-width:900px; background:#fff; padding:20px; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
-    input,button { padding:10px; border-radius:8px; border:1px solid #ccc; font-size:14px; }
+    form {
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 20px auto;
+      width: min(960px, 100%);
+      background:#fff;
+      padding: clamp(20px, 4.5vw, 32px);
+      border-radius:16px;
+      box-shadow:0 2px 10px rgba(0,0,0,0.08);
+      align-items: end;
+    }
+    input,button { padding:12px; border-radius:10px; border:1px solid #cfd4dc; font-size:15px; font-family:inherit; }
     button { background:#cc3300; color:#fff; border:none; cursor:pointer; font-weight:bold; transition:.3s; }
     button:hover { background:#ff5500; }
-    table { width:100%; border-collapse:collapse; margin-top:20px; background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
+    #invoiceForm button { grid-column: 1 / -1; }
+    .table-wrapper {
+      width: min(960px, 100%);
+      margin: 20px auto 0;
+      background:#fff;
+      border-radius:16px;
+      box-shadow:0 2px 10px rgba(0,0,0,0.08);
+      overflow:auto;
+    }
+    table { width:100%; border-collapse:collapse; }
     th,td { padding:12px; border-bottom:1px solid #eee; text-align:center; }
     th { background:#f5f5f5; color:#444; }
     tr:hover { background:#fafafa; }
@@ -40,7 +69,24 @@
     .delete { background:#dc3545; color:#fff; }
     .delete:hover { background:#bd2130; }
     tfoot td { font-weight:bold; background:#fafafa; }
-      .back-container-bottom { text-align:center; margin-top:20px; }
+    .back-container-bottom { text-align:center; margin-top:20px; }
+    @media (max-width: 640px) {
+      body {
+        padding: 24px 16px 40px;
+      }
+      form {
+        gap: 10px;
+      }
+      input, button {
+        font-size: 14px;
+      }
+      .table-wrapper {
+        border-radius: 14px;
+      }
+      table {
+        font-size: 14px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -53,14 +99,16 @@
   <input type="date" id="date" required>
   <input type="text" id="driver" placeholder="🚚 اسم السائق" required>
   <input type="text" id="cargo" placeholder="📦 الحمولة" required>
-  <input type="number" id="price" placeholder="💰 السعر" required>
+  <input type="number" id="price" placeholder="💰 السعر بالدولار (USD)" required>
   <button type="submit">➕ إضافة فاتورة</button>
 </form>
-<table>
-  <thead><tr><th>📅 التاريخ</th><th>🚚 السائق</th><th>📦 الحمولة</th><th>💰 السعر</th><th>⚙️ خيارات</th></tr></thead>
-  <tbody id="rows"></tbody>
-  <tfoot><tr><td colspan="3">الإجمالي</td><td id="total"></td><td></td></tr></tfoot>
-</table>
+<div class="table-wrapper">
+  <table>
+    <thead><tr><th>📅 التاريخ</th><th>🚚 السائق</th><th>📦 الحمولة</th><th>💰 السعر (USD)</th><th>⚙️ خيارات</th></tr></thead>
+    <tbody id="rows"></tbody>
+    <tfoot><tr><td colspan="3">الإجمالي</td><td id="total"></td><td></td></tr></tfoot>
+  </table>
+</div>
   <div class="back-container-bottom">
     <a href="accounts.html" class="back-bottom">🔙 رجوع إلى الحسابات</a>
   </div>
@@ -71,6 +119,12 @@ document.getElementById("title").textContent="حساب العميل: "+client;
 let accounts=JSON.parse(localStorage.getItem("accounts"))||{};
 if(!accounts[client]) accounts[client]=[];
 let list=accounts[client];
+const currencyFormatter=new Intl.NumberFormat("ar-IQ",{style:"currency",currency:"USD"});
+
+function formatUsd(value){
+  const amount=Number(value||0);
+  return currencyFormatter.format(isNaN(amount)?0:amount);
+}
 
 function render(){
   const tbody=document.getElementById("rows");
@@ -78,7 +132,7 @@ function render(){
   let total=0;
   list.forEach((e,i)=>{
     let tr=document.createElement("tr");
-    tr.innerHTML=`<td>${e.date}</td><td>${e.driver}</td><td>${e.cargo}</td><td>${Number(e.price).toLocaleString("en-US")}</td>
+    tr.innerHTML=`<td>${e.date||"--"}</td><td>${e.driver}</td><td>${e.cargo}</td><td>${formatUsd(e.price)}</td>
     <td>
       <button class="action-btn edit" onclick="editInvoice(${i})">✏️ تعديل</button>
       <button class="action-btn delete" onclick="deleteInvoice(${i})">🗑️ حذف</button>
@@ -86,7 +140,7 @@ function render(){
     tbody.appendChild(tr);
     total+=Number(e.price);
   });
-  document.getElementById("total").textContent=total.toLocaleString("en-US");
+  document.getElementById("total").textContent=formatUsd(total);
 }
 
 document.getElementById("invoiceForm").addEventListener("submit", e=>{

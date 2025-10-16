@@ -1,23 +1,154 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head><meta charset="UTF-8"><title>تتبع الشحنة</title>
-<style>body{font-family:'Cairo';background:#f5f6fa;text-align:center;padding:30px;}h1{color:#cc3300;}input,button{padding:10px;margin:10px;border-radius:8px;border:1px solid #ccc;}button{background:#28a745;color:#fff;border:none;}button:hover{background:#218838;}.badge{background:#ffc107;padding:4px 8px;border-radius:6px;display:inline-block;margin:2px;}.back-container{text-align:right;margin-bottom:10px;}.back-button{display:inline-flex;align-items:center;gap:6px;background:#003366;color:#fff;padding:10px 18px;border-radius:999px;text-decoration:none;font-weight:600;box-shadow:0 4px 10px rgba(0,0,0,0.15);transition:transform .2s ease,box-shadow .2s ease,background .2s ease;}.back-button:hover{background:#005599;transform:translateY(-2px);box-shadow:0 6px 14px rgba(0,0,0,0.18);}</style>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>تتبع الشحنة</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: #f5f6fa;
+      margin: 0;
+      min-height: 100vh;
+      padding: clamp(24px, 6vw, 60px) clamp(16px, 6vw, 40px);
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+    .back-container {
+      align-self: stretch;
+      text-align: right;
+    }
+    .back-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #003366;
+      color: #fff;
+      padding: 10px 18px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 600;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+    .back-button:hover {
+      background: #005599;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18);
+    }
+    h1 {
+      color: #cc3300;
+      margin: 0;
+      font-size: clamp(26px, 7vw, 36px);
+      text-align: center;
+    }
+    .input-group {
+      width: min(520px, 100%);
+      display: flex;
+      gap: 10px;
+      background: #fff;
+      padding: 14px;
+      border-radius: 16px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    }
+    input,
+    button {
+      border-radius: 10px;
+      border: 1px solid #cfd4dc;
+      font-size: 16px;
+      font-family: inherit;
+      padding: 12px;
+    }
+    input {
+      flex: 1;
+    }
+    button {
+      background: #28a745;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-weight: 700;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+    button:hover {
+      background: #218838;
+      transform: translateY(-1px);
+    }
+    #result {
+      width: min(520px, 100%);
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+      padding: 20px;
+      text-align: right;
+      line-height: 1.7;
+    }
+    .badge {
+      background: #ffc107;
+      padding: 4px 8px;
+      border-radius: 6px;
+      display: inline-block;
+      margin: 2px;
+    }
+    @media (max-width: 600px) {
+      body {
+        padding: 24px 16px 40px;
+      }
+      .input-group {
+        flex-direction: column;
+      }
+      button {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
 <body>
-<div class="back-container"><a href="#" class="back-button" onclick="history.back(); return false;">🔙 رجوع</a></div>
-<h1>📦 تتبع الشحنة</h1>
-<input id="tracking" placeholder="GLT-2025-1001"><button onclick="track()">بحث</button>
-<div id="result"></div>
-<script>
-function track(){
- const input=document.getElementById('tracking').value.trim();
- const result=document.getElementById('result');
- if(!input){ result.textContent="⚠️ الرجاء إدخال رقم التعقب."; return; }
- const mock={"GLT-2025-1001":{status:"📍 وصلت إلى أربيل",history:[["2025-10-01","تم الاستلام"],["2025-10-02","غادرت المستودع"],["2025-10-03","قيد النقل"],["2025-10-04","📍 وصلت أربيل"]]}, "GLT-2025-0999":{status:"🚚 قيد النقل",history:[["2025-10-02","استلام"],["2025-10-03","غادرت"]]} };
- const data=mock[input];
- if(!data){ result.textContent="❌ لم يتم العثور على شحنة بهذا الرقم."; return; }
- let lines=data.history.map(h=>`<div><span class='badge'>${h[0]}</span> ${h[1]}</div>`).join("");
- result.innerHTML=`<div><strong>الحالة الحالية:</strong> ${data.status}</div><hr>${lines}`;
-}
-</script>
-</body></html>
+  <div class="back-container"><a href="#" class="back-button" onclick="history.back(); return false;">🔙 رجوع</a></div>
+  <h1>📦 تتبع الشحنة</h1>
+  <div class="input-group">
+    <input id="tracking" placeholder="GLT-2025-1001">
+    <button onclick="track()">بحث</button>
+  </div>
+  <div id="result"></div>
+  <script>
+    function track(){
+      const input = document.getElementById('tracking').value.trim();
+      const result = document.getElementById('result');
+      if(!input){
+        result.textContent = "⚠️ الرجاء إدخال رقم التعقب.";
+        return;
+      }
+      const mock = {
+        "GLT-2025-1001": {
+          status: "📍 وصلت إلى أربيل",
+          history: [
+            ["2025-10-01", "تم الاستلام"],
+            ["2025-10-02", "غادرت المستودع"],
+            ["2025-10-03", "قيد النقل"],
+            ["2025-10-04", "📍 وصلت أربيل"]
+          ]
+        },
+        "GLT-2025-0999": {
+          status: "🚚 قيد النقل",
+          history: [
+            ["2025-10-02", "استلام"],
+            ["2025-10-03", "غادرت"]
+          ]
+        }
+      };
+      const data = mock[input];
+      if(!data){
+        result.textContent = "❌ لم يتم العثور على شحنة بهذا الرقم.";
+        return;
+      }
+      const lines = data.history.map(h => `<div><span class="badge">${h[0]}</span> ${h[1]}</div>`).join("");
+      result.innerHTML = `<div><strong>الحالة الحالية:</strong> ${data.status}</div><hr>${lines}`;
+    }
+  </script>
+</body>
+</html>

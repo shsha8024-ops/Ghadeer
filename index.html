@@ -2,32 +2,101 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ghadeer Logistics</title>
   <style>
-    body { font-family:'Cairo',sans-serif; margin:0; background:#f5f6fa; text-align:center; color:#333; }
-    .back-container { text-align:right; padding:20px; }
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Cairo', sans-serif;
+      margin: 0;
+      background: #f5f6fa;
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .back-container {
+      text-align: right;
+      padding: 20px clamp(16px, 5vw, 40px) 0;
+    }
     .back-button {
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      background:#003366;
-      color:#fff;
-      padding:10px 18px;
-      border-radius:999px;
-      text-decoration:none;
-      font-weight:600;
-      box-shadow:0 4px 10px rgba(0,0,0,0.15);
-      transition:transform .2s ease, box-shadow .2s ease, background .2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #003366;
+      color: #fff;
+      padding: 10px 18px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 600;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
     }
     .back-button:hover {
-      background:#005599;
-      transform:translateY(-2px);
-      box-shadow:0 6px 14px rgba(0,0,0,0.18);
+      background: #005599;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18);
     }
-    header { background:#003366; color:#fff; padding:20px; }
-    nav a { margin:0 15px; color:#fff; text-decoration:none; font-weight:bold; }
-    main { padding:40px; }
-    h1 { color:#cc3300; }
+    header {
+      background: #003366;
+      color: #fff;
+      padding: 24px clamp(16px, 5vw, 48px);
+      text-align: center;
+    }
+    nav {
+      margin-top: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px 18px;
+    }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 700;
+      padding: 8px 14px;
+      border-radius: 999px;
+      transition: background 0.2s ease;
+    }
+    nav a:hover,
+    nav a:focus {
+      background: rgba(255, 255, 255, 0.18);
+    }
+    main {
+      width: min(960px, 100%);
+      margin: 0 auto;
+      padding: clamp(24px, 6vw, 56px) clamp(16px, 6vw, 48px) 64px;
+      text-align: center;
+    }
+    h1 { color: #cc3300; }
+    .welcome-message {
+      max-width: 640px;
+      margin: 20px auto 0;
+      padding: 16px 20px;
+      background: #e8f5e9;
+      color: #1b5e20;
+      border-radius: 12px;
+      font-weight: 600;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+    }
+    @media (max-width: 600px) {
+      .back-container {
+        padding-inline: 16px;
+      }
+      .back-button {
+        padding: 9px 16px;
+        font-size: 14px;
+      }
+      header h1 {
+        font-size: 24px;
+      }
+      nav a {
+        font-size: 14px;
+      }
+      main {
+        padding: 24px 16px 48px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -45,9 +114,28 @@
     <a href="login.html">🔐 تسجيل الدخول</a>
   </nav>
 </header>
+<div id="welcome" class="welcome-message" style="display:none;"></div>
 <main>
   <h1>مرحباً بكم في Ghadeer Logistics</h1>
   <p>حلول النقل والشحن داخل كردستان والعراق.</p>
 </main>
+<script>
+  (function showWelcomeMessage() {
+    try {
+      const welcomeText = sessionStorage.getItem('ghadeerWelcome');
+      if (!welcomeText) {
+        return;
+      }
+      const container = document.getElementById('welcome');
+      if (container) {
+        container.textContent = welcomeText;
+        container.style.display = 'block';
+      }
+      sessionStorage.removeItem('ghadeerWelcome');
+    } catch (error) {
+      console.warn('تعذر قراءة رسالة الترحيب:', error);
+    }
+  })();
+</script>
 </body>
 </html>

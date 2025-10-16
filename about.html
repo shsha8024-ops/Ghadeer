@@ -1,7 +1,70 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head><meta charset="UTF-8"><title>عن الشركة</title>
-<style>body{font-family:'Cairo';background:#f5f6fa;padding:30px;}section{max-width:700px;margin:auto;background:#fff;padding:20px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.1);}h1{color:#cc3300;}.back-container{text-align:right;margin-bottom:20px;}.back-button{display:inline-flex;align-items:center;gap:6px;background:#003366;color:#fff;padding:10px 18px;border-radius:999px;text-decoration:none;font-weight:600;box-shadow:0 4px 10px rgba(0,0,0,0.15);transition:transform .2s ease,box-shadow .2s ease,background .2s ease;}.back-button:hover{background:#005599;transform:translateY(-2px);box-shadow:0 6px 14px rgba(0,0,0,0.18);}</style>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>عن الشركة</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: #f5f6fa;
+      margin: 0;
+      min-height: 100vh;
+      padding: clamp(20px, 6vw, 48px) clamp(16px, 5vw, 40px);
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+    }
+    .back-container {
+      align-self: stretch;
+      text-align: right;
+    }
+    .back-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #003366;
+      color: #fff;
+      padding: 10px 18px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 600;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+    .back-button:hover {
+      background: #005599;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18);
+    }
+    section {
+      width: min(720px, 100%);
+      background: #fff;
+      padding: clamp(20px, 5vw, 36px);
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+      text-align: center;
+    }
+    h1 {
+      color: #cc3300;
+      margin-top: 0;
+      font-size: clamp(26px, 6vw, 34px);
+    }
+    p {
+      line-height: 1.8;
+      font-size: clamp(16px, 4.5vw, 18px);
+      margin: 0;
+    }
+  </style>
 </head>
-<body><div class="back-container"><a href="#" class="back-button" onclick="history.back(); return false;">🔙 رجوع</a></div><section><h1>عن الشركة</h1><p>شركة الغدير للخدمات اللوجستية تقدم خدمات شحن ونقل متكاملة، مع شبكة واسعة في كردستان والعراق.</p></section></body>
+<body>
+  <div class="back-container"><a href="#" class="back-button" onclick="history.back(); return false;">🔙 رجوع</a></div>
+  <section>
+    <h1>عن الشركة</h1>
+    <p>شركة الغدير للخدمات اللوجستية تقدم خدمات شحن ونقل متكاملة، مع شبكة واسعة في كردستان والعراق.</p>
+  </section>
+</body>
 </html>
