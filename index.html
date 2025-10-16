@@ -6,15 +6,16 @@
   <style>
     :root {
       color-scheme: dark light;
-      --night: #050b22;
-      --dusk: #12244d;
-      --accent: #f39c12;
-      --glass: rgba(255, 255, 255, 0.08);
-      --radius: 22px;
-      --text-light: #f8faff;
-      --text-muted: #c7d3ff;
-      --error: #ff7675;
-      --success: #2ecc71;
+      --midnight: #050816;
+      --twilight: #111b34;
+      --aurora: linear-gradient(135deg, #a855f7, #22d3ee);
+      --card: rgba(9, 14, 28, 0.78);
+      --outline: rgba(168, 85, 247, 0.45);
+      --radius: 28px;
+      --text-strong: #f5f7ff;
+      --text-muted: #b8c2e3;
+      --error: #ff7b7b;
+      --success: #50fa9a;
     }
 
     * {
@@ -29,10 +30,10 @@
       align-items: center;
       justify-content: center;
       padding: 40px 16px;
-      background: radial-gradient(circle at top right, rgba(243, 156, 18, 0.25), transparent 35%),
-                  radial-gradient(circle at bottom left, rgba(54, 209, 220, 0.25), transparent 45%),
-                  linear-gradient(135deg, var(--night), var(--dusk));
-      color: var(--text-light);
+      background: radial-gradient(circle at 15% 20%, rgba(168, 85, 247, 0.24), transparent 45%),
+                  radial-gradient(circle at 80% 85%, rgba(34, 211, 238, 0.22), transparent 55%),
+                  linear-gradient(140deg, var(--midnight), var(--twilight));
+      color: var(--text-strong);
       position: relative;
       overflow: hidden;
     }
@@ -44,10 +45,10 @@
       width: 420px;
       height: 420px;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.06);
-      filter: blur(0px);
+      background: conic-gradient(from 90deg, rgba(168, 85, 247, 0.2), rgba(34, 211, 238, 0.1), rgba(168, 85, 247, 0.2));
+      filter: blur(2px);
       z-index: 0;
-      animation: float 14s linear infinite;
+      animation: float 16s linear infinite;
     }
 
     body::before {
@@ -58,26 +59,42 @@
     body::after {
       bottom: -160px;
       right: -200px;
-      animation-duration: 18s;
+      animation-duration: 22s;
       animation-direction: reverse;
     }
 
     @keyframes float {
-      0% { transform: translateY(0) rotate(0deg); }
-      50% { transform: translateY(-12px) rotate(3deg); }
-      100% { transform: translateY(0) rotate(0deg); }
+      0% { transform: translate3d(0, 0, 0) rotate(0deg); }
+      50% { transform: translate3d(12px, -18px, 0) rotate(6deg); }
+      100% { transform: translate3d(0, 0, 0) rotate(0deg); }
     }
 
     .card {
       position: relative;
       z-index: 1;
       width: min(440px, 100%);
-      padding: 36px 32px 42px;
-      background: rgba(4, 12, 36, 0.75);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 40px 36px 48px;
+      background: var(--card);
       border-radius: var(--radius);
-      box-shadow: 0 28px 60px rgba(0, 0, 0, 0.45);
-      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 35px 70px rgba(2, 6, 20, 0.6);
+      backdrop-filter: blur(18px) saturate(145%);
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -40% 15% 60% -25%;
+      background: radial-gradient(circle, rgba(134, 213, 255, 0.22), transparent 65%);
+      opacity: 0.6;
+      transform: rotate(8deg);
+      pointer-events: none;
+    }
+
+    .card > * {
+      position: relative;
+      z-index: 1;
     }
 
     .brand {
@@ -85,22 +102,23 @@
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      margin-bottom: 28px;
+      margin-bottom: 32px;
     }
 
     .brand h1 {
       margin: 0;
-      font-size: 28px;
-      letter-spacing: 0.5px;
+      font-size: 30px;
+      letter-spacing: 0.7px;
     }
 
     .badge {
-      padding: 6px 14px;
+      padding: 7px 16px;
       border-radius: 999px;
-      background: rgba(243, 156, 18, 0.12);
-      color: var(--accent);
+      background: rgba(168, 85, 247, 0.14);
+      color: #c084fc;
       font-size: 13px;
       font-weight: 600;
+      box-shadow: inset 0 0 0 1px rgba(168, 85, 247, 0.35);
     }
 
     .card p {
@@ -113,7 +131,7 @@
       display: block;
       margin-bottom: 8px;
       font-weight: 600;
-      color: var(--text-light);
+      color: var(--text-strong);
     }
 
     .field {
@@ -123,19 +141,20 @@
 
     .field input {
       width: 100%;
-      padding: 14px 46px 14px 16px;
-      border-radius: 14px;
+      padding: 16px 52px 16px 18px;
+      border-radius: 16px;
       border: 1px solid rgba(255, 255, 255, 0.08);
-      background: rgba(15, 28, 72, 0.68);
-      color: var(--text-light);
+      background: rgba(16, 24, 45, 0.85);
+      color: var(--text-strong);
       font-size: 16px;
-      transition: border 0.2s ease, box-shadow 0.2s ease;
+      transition: border 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
     }
 
     .field input:focus {
       outline: none;
-      border-color: rgba(243, 156, 18, 0.6);
-      box-shadow: 0 0 0 4px rgba(243, 156, 18, 0.12);
+      border-color: var(--outline);
+      box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.18);
+      transform: translateY(-1px);
     }
 
     .field span {
@@ -143,27 +162,27 @@
       inset-inline-end: 16px;
       top: 50%;
       transform: translateY(-50%);
-      color: var(--accent);
-      opacity: 0.7;
+      color: #82d7f2;
+      opacity: 0.9;
     }
 
     button {
       width: 100%;
-      padding: 15px;
-      border-radius: 16px;
+      padding: 16px;
+      border-radius: 18px;
       border: none;
       font-size: 17px;
       font-weight: 700;
       cursor: pointer;
-      background: linear-gradient(135deg, #f39c12, #f1c40f);
-      color: #1b1b28;
-      letter-spacing: 0.5px;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      background: var(--aurora);
+      color: #0b0f1c;
+      letter-spacing: 0.6px;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
     }
 
     button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 16px 30px rgba(243, 156, 18, 0.25);
+      transform: translateY(-3px);
+      box-shadow: 0 18px 34px rgba(15, 23, 42, 0.55);
     }
 
     .meta {
@@ -172,13 +191,33 @@
       align-items: center;
       font-size: 13px;
       color: var(--text-muted);
-      margin-bottom: 26px;
+      margin-bottom: 28px;
     }
 
     .meta a {
-      color: var(--accent);
+      color: #86d5ff;
       text-decoration: none;
       font-weight: 600;
+      position: relative;
+      padding-bottom: 2px;
+    }
+
+    .meta a::after {
+      content: "";
+      position: absolute;
+      inset-inline-start: 0;
+      bottom: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, rgba(134, 213, 255, 0.2), rgba(134, 213, 255, 0.8));
+      transform: scaleX(0);
+      transform-origin: inset-inline-start;
+      transition: transform 0.3s ease;
+    }
+
+    .meta a:hover::after,
+    .meta a:focus-visible::after {
+      transform: scaleX(1);
     }
 
     .message {
@@ -203,20 +242,22 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 10px 20px;
+      padding: 11px 22px;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.08);
-      color: var(--text-light);
+      background: rgba(12, 20, 40, 0.82);
+      color: var(--text-strong);
       text-decoration: none;
       font-weight: 600;
-      backdrop-filter: blur(10px);
-      transition: transform 0.2s ease, background 0.2s ease;
+      backdrop-filter: blur(12px);
+      box-shadow: inset 0 0 0 1px rgba(134, 213, 255, 0.22);
+      transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
       z-index: 2;
     }
 
     .back-button:hover {
-      transform: translateY(-2px);
-      background: rgba(255, 255, 255, 0.16);
+      transform: translateY(-3px);
+      background: rgba(18, 28, 52, 0.92);
+      box-shadow: inset 0 0 0 1px rgba(168, 85, 247, 0.35);
     }
 
     @media (max-width: 480px) {
@@ -225,7 +266,7 @@
       }
 
       .card {
-        padding: 28px 22px 34px;
+        padding: 32px 24px 38px;
       }
 
       .brand h1 {
