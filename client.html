@@ -2,133 +2,192 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>حساب العميل</title>
-  <style>
-    body { font-family:'Cairo',sans-serif; background:#eef2f7; margin:0; padding:20px; color:#333; }
-    header { text-align:center; }
-    h1 { color:#cc3300; }
-    .back-container { text-align:right; margin-bottom:10px; }
-    .back-button {
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      background:#003366;
-      color:#fff;
-      padding:10px 18px;
-      border-radius:999px;
-      text-decoration:none;
-      font-weight:600;
-      box-shadow:0 4px 10px rgba(0,0,0,0.15);
-      transition:transform .2s ease, box-shadow .2s ease, background .2s ease;
-    }
-    .back-button:hover { background:#005599; transform:translateY(-2px); box-shadow:0 6px 14px rgba(0,0,0,0.18); }
-    a.back, a.back-bottom {
-      display:inline-block; margin:10px 0; background:#003366; color:#fff; padding:8px 15px; border-radius:8px; text-decoration:none; font-weight:bold;
-    }
-    a.back:hover, a.back-bottom:hover { background:#005599; }
-    form { display:grid; grid-template-columns:repeat(4,1fr) auto; gap:10px; margin:20px auto; max-width:900px; background:#fff; padding:20px; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
-    input,button { padding:10px; border-radius:8px; border:1px solid #ccc; font-size:14px; }
-    button { background:#cc3300; color:#fff; border:none; cursor:pointer; font-weight:bold; transition:.3s; }
-    button:hover { background:#ff5500; }
-    table { width:100%; border-collapse:collapse; margin-top:20px; background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
-    th,td { padding:12px; border-bottom:1px solid #eee; text-align:center; }
-    th { background:#f5f5f5; color:#444; }
-    tr:hover { background:#fafafa; }
-    .action-btn { padding:5px 10px; border:none; border-radius:6px; cursor:pointer; font-size:13px; margin:2px; }
-    .edit { background:#ffc107; color:#333; }
-    .edit:hover { background:#e0a800; }
-    .delete { background:#dc3545; color:#fff; }
-    .delete:hover { background:#bd2130; }
-    tfoot td { font-weight:bold; background:#fafafa; }
-      .back-container-bottom { text-align:center; margin-top:20px; }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ghadeer Logistics | حساب العميل</title>
+  <link rel="stylesheet" href="assets/css/theme.css">
 </head>
 <body>
-<div class="back-container"><a href="#" class="back-button" onclick="history.back(); return false;">🔙 رجوع</a></div>
-<header>
-  <h1 id="title">حساب العميل</h1>
-  <a href="accounts.html" class="back">⬅️ رجوع إلى الحسابات</a>
-</header>
-<form id="invoiceForm">
-  <input type="date" id="date" required>
-  <input type="text" id="driver" placeholder="🚚 اسم السائق" required>
-  <input type="text" id="cargo" placeholder="📦 الحمولة" required>
-  <input type="number" id="price" placeholder="💰 السعر" required>
-  <button type="submit">➕ إضافة فاتورة</button>
-</form>
-<table>
-  <thead><tr><th>📅 التاريخ</th><th>🚚 السائق</th><th>📦 الحمولة</th><th>💰 السعر</th><th>⚙️ خيارات</th></tr></thead>
-  <tbody id="rows"></tbody>
-  <tfoot><tr><td colspan="3">الإجمالي</td><td id="total"></td><td></td></tr></tfoot>
-</table>
-  <div class="back-container-bottom">
-    <a href="accounts.html" class="back-bottom">🔙 رجوع إلى الحسابات</a>
-  </div>
-<script>
-let params=new URLSearchParams(location.search);
-let client=params.get("name");
-document.getElementById("title").textContent="حساب العميل: "+client;
-let accounts=JSON.parse(localStorage.getItem("accounts"))||{};
-if(!accounts[client]) accounts[client]=[];
-let list=accounts[client];
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-mark">GL</div>
+      <h1>Ghadeer Logistics</h1>
+    </div>
+    <nav class="nav-links">
+      <a class="nav-link" href="Home.html">الرئيسية</a>
+      <a class="nav-link" href="about.html">عن الشركة</a>
+      <a class="nav-link" href="dashboard.html">لوحة التحكم</a>
+      <a class="nav-link active" href="accounts.html">الحسابات</a>
+      <a class="nav-link" href="track.html">تتبع الشحنات</a>
+      <a class="nav-link" href="Reportal.html">التقارير</a>
+      <a class="nav-link" href="contact.html">اتصل بنا</a>
+      <a class="nav-link" href="index.html">تسجيل الدخول</a>
+    </nav>
+  </header>
 
-function render(){
-  const tbody=document.getElementById("rows");
-  tbody.innerHTML="";
-  let total=0;
-  list.forEach((e,i)=>{
-    let tr=document.createElement("tr");
-    tr.innerHTML=`<td>${e.date}</td><td>${e.driver}</td><td>${e.cargo}</td><td>${Number(e.price).toLocaleString("en-US")}</td>
-    <td>
-      <button class="action-btn edit" onclick="editInvoice(${i})">✏️ تعديل</button>
-      <button class="action-btn delete" onclick="deleteInvoice(${i})">🗑️ حذف</button>
-    </td>`;
-    tbody.appendChild(tr);
-    total+=Number(e.price);
-  });
-  document.getElementById("total").textContent=total.toLocaleString("en-US");
-}
+  <main class="page-shell">
+    <section class="glass-card hero-card">
+      <h2 class="page-title" id="title">حساب العميل</h2>
+      <p class="lead">إدارة الفواتير والسجلات المالية الخاصة بالعميل المحدد. يتم تحديث الأرقام فورًا بعد كل تعديل.</p>
+      <div class="chip-row">
+        <span class="chip">📑 فواتير: <span id="invoiceCount">0</span></span>
+        <span class="chip">💰 إجمالي مستحق: <span id="totalValue">0</span> د.ع</span>
+      </div>
+      <div class="actions-row">
+        <a class="button ghost" href="accounts.html">⬅️ الرجوع إلى الحسابات</a>
+      </div>
+    </section>
 
-document.getElementById("invoiceForm").addEventListener("submit", e=>{
-  e.preventDefault();
-  const entry={
-    date:document.getElementById("date").value,
-    driver:document.getElementById("driver").value,
-    cargo:document.getElementById("cargo").value,
-    price:document.getElementById("price").value
-  };
-  if(editIndex!==null){
-    list[editIndex]=entry;
-    editIndex=null;
-  } else {
-    list.push(entry);
-  }
-  accounts[client]=list;
-  localStorage.setItem("accounts",JSON.stringify(accounts));
-  render();
-  e.target.reset();
-  document.querySelector("#invoiceForm button").textContent="➕ إضافة فاتورة";
-});
+    <section class="glass-card">
+      <div class="section-heading">
+        <div>
+          <h2>إضافة فاتورة</h2>
+          <p>أدخل بيانات الفاتورة الجديدة أو عدّل فاتورة حالية.</p>
+        </div>
+      </div>
+      <form id="invoiceForm" class="form-grid inline">
+        <div>
+          <label for="date">التاريخ</label>
+          <input type="date" id="date" required>
+        </div>
+        <div>
+          <label for="driver">اسم السائق</label>
+          <input type="text" id="driver" placeholder="مثال: أحمد رشيد" required>
+        </div>
+        <div>
+          <label for="cargo">الحمولة</label>
+          <input type="text" id="cargo" placeholder="نوع البضاعة" required>
+        </div>
+        <div>
+          <label for="price">السعر</label>
+          <input type="number" id="price" placeholder="المبلغ بالدينار" required>
+        </div>
+        <button class="button primary" type="submit" id="submitBtn">➕ إضافة فاتورة</button>
+      </form>
+    </section>
 
-let editIndex=null;
-function editInvoice(i){
-  const e=list[i];
-  document.getElementById("date").value=e.date;
-  document.getElementById("driver").value=e.driver;
-  document.getElementById("cargo").value=e.cargo;
-  document.getElementById("price").value=e.price;
-  editIndex=i;
-  document.querySelector("#invoiceForm button").textContent="💾 حفظ التعديل";
-}
-function deleteInvoice(i){
-  if(confirm("هل تريد حذف هذه الفاتورة؟")){
-    list.splice(i,1);
-    accounts[client]=list;
-    localStorage.setItem("accounts",JSON.stringify(accounts));
+    <section class="glass-card table-card">
+      <div class="table-header">
+        <div class="section-heading">
+          <div>
+            <h2>سجل الفواتير</h2>
+            <p>يمكنك تعديل أو حذف أي فاتورة من القائمة التالية.</p>
+          </div>
+        </div>
+      </div>
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>📅 التاريخ</th>
+              <th>🚚 السائق</th>
+              <th>📦 الحمولة</th>
+              <th>💰 السعر</th>
+              <th>⚙️ الخيارات</th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+          <tfoot>
+            <tr>
+              <td colspan="5">
+                <div class="chip">إجمالي الحساب: <span id="totalFooter">0</span> د.ع</div>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </section>
+
+    <p class="footer-note">يتم حفظ البيانات في المتصفح المحلي. تأكد من تصديرها عند الحاجة.</p>
+  </main>
+
+  <script>
+    const params = new URLSearchParams(location.search);
+    const client = params.get('name') || 'عميل غير معروف';
+    const title = document.getElementById('title');
+    title.textContent = 'حساب العميل: ' + client;
+
+    let accounts = JSON.parse(localStorage.getItem('accounts')) || {};
+    if (!accounts[client]) {
+      accounts[client] = [];
+    }
+    let list = accounts[client];
+    let editIndex = null;
+
+    function render() {
+      const tbody = document.getElementById('rows');
+      const invoiceCount = document.getElementById('invoiceCount');
+      const totalBadge = document.getElementById('totalValue');
+      const totalFooter = document.getElementById('totalFooter');
+
+      tbody.innerHTML = '';
+      let total = 0;
+
+      list.forEach((entry, index) => {
+        const amount = Number(entry.price) || 0;
+        total += amount;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${entry.date || '-'}</td>
+          <td>${entry.driver || '-'}</td>
+          <td>${entry.cargo || '-'}</td>
+          <td>${amount.toLocaleString('en-US')}</td>
+          <td>
+            <div class="action-buttons">
+              <button class="action-button edit" onclick="editInvoice(${index})">✏️ تعديل</button>
+              <button class="action-button delete" onclick="deleteInvoice(${index})">🗑️ حذف</button>
+            </div>
+          </td>`;
+        tbody.appendChild(tr);
+      });
+
+      invoiceCount.textContent = list.length;
+      totalBadge.textContent = total.toLocaleString('en-US');
+      totalFooter.textContent = total.toLocaleString('en-US');
+    }
+
+    document.getElementById('invoiceForm').addEventListener('submit', (event) => {
+      event.preventDefault();
+      const entry = {
+        date: document.getElementById('date').value,
+        driver: document.getElementById('driver').value,
+        cargo: document.getElementById('cargo').value,
+        price: document.getElementById('price').value
+      };
+
+      if (editIndex !== null) {
+        list[editIndex] = entry;
+        editIndex = null;
+        document.getElementById('submitBtn').textContent = '➕ إضافة فاتورة';
+      } else {
+        list.push(entry);
+      }
+
+      accounts[client] = list;
+      localStorage.setItem('accounts', JSON.stringify(accounts));
+      render();
+      event.target.reset();
+    });
+
+    function editInvoice(index) {
+      const entry = list[index];
+      document.getElementById('date').value = entry.date;
+      document.getElementById('driver').value = entry.driver;
+      document.getElementById('cargo').value = entry.cargo;
+      document.getElementById('price').value = entry.price;
+      document.getElementById('submitBtn').textContent = '💾 حفظ التعديل';
+      editIndex = index;
+    }
+
+    function deleteInvoice(index) {
+      if (confirm('هل تريد حذف هذه الفاتورة؟')) {
+        list.splice(index, 1);
+        accounts[client] = list;
+        localStorage.setItem('accounts', JSON.stringify(accounts));
+        render();
+      }
+    }
+
     render();
-  }
-}
-render();
-</script>
+  </script>
 </body>
 </html>

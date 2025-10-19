@@ -1,23 +1,109 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head><meta charset="UTF-8"><title>تتبع الشحنة</title>
-<style>body{font-family:'Cairo';background:#f5f6fa;text-align:center;padding:30px;}h1{color:#cc3300;}input,button{padding:10px;margin:10px;border-radius:8px;border:1px solid #ccc;}button{background:#28a745;color:#fff;border:none;}button:hover{background:#218838;}.badge{background:#ffc107;padding:4px 8px;border-radius:6px;display:inline-block;margin:2px;}.back-container{text-align:right;margin-bottom:10px;}.back-button{display:inline-flex;align-items:center;gap:6px;background:#003366;color:#fff;padding:10px 18px;border-radius:999px;text-decoration:none;font-weight:600;box-shadow:0 4px 10px rgba(0,0,0,0.15);transition:transform .2s ease,box-shadow .2s ease,background .2s ease;}.back-button:hover{background:#005599;transform:translateY(-2px);box-shadow:0 6px 14px rgba(0,0,0,0.18);}</style>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ghadeer Logistics | تتبع الشحنات</title>
+  <link rel="stylesheet" href="assets/css/theme.css">
 </head>
 <body>
-<div class="back-container"><a href="#" class="back-button" onclick="history.back(); return false;">🔙 رجوع</a></div>
-<h1>📦 تتبع الشحنة</h1>
-<input id="tracking" placeholder="GLT-2025-1001"><button onclick="track()">بحث</button>
-<div id="result"></div>
-<script>
-function track(){
- const input=document.getElementById('tracking').value.trim();
- const result=document.getElementById('result');
- if(!input){ result.textContent="⚠️ الرجاء إدخال رقم التعقب."; return; }
- const mock={"GLT-2025-1001":{status:"📍 وصلت إلى أربيل",history:[["2025-10-01","تم الاستلام"],["2025-10-02","غادرت المستودع"],["2025-10-03","قيد النقل"],["2025-10-04","📍 وصلت أربيل"]]}, "GLT-2025-0999":{status:"🚚 قيد النقل",history:[["2025-10-02","استلام"],["2025-10-03","غادرت"]]} };
- const data=mock[input];
- if(!data){ result.textContent="❌ لم يتم العثور على شحنة بهذا الرقم."; return; }
- let lines=data.history.map(h=>`<div><span class='badge'>${h[0]}</span> ${h[1]}</div>`).join("");
- result.innerHTML=`<div><strong>الحالة الحالية:</strong> ${data.status}</div><hr>${lines}`;
-}
-</script>
-</body></html>
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-mark">GL</div>
+      <h1>Ghadeer Logistics</h1>
+    </div>
+    <nav class="nav-links">
+      <a class="nav-link" href="Home.html">الرئيسية</a>
+      <a class="nav-link" href="about.html">عن الشركة</a>
+      <a class="nav-link" href="dashboard.html">لوحة التحكم</a>
+      <a class="nav-link" href="accounts.html">الحسابات</a>
+      <a class="nav-link active" href="track.html">تتبع الشحنات</a>
+      <a class="nav-link" href="Reportal.html">التقارير</a>
+      <a class="nav-link" href="contact.html">اتصل بنا</a>
+      <a class="nav-link" href="index.html">تسجيل الدخول</a>
+    </nav>
+  </header>
+
+  <main class="page-shell">
+    <section class="glass-card hero-card">
+      <h2 class="page-title">تتبع شحنتك مباشرة</h2>
+      <p class="lead">أدخل رقم التتبع للحصول على حالة الشحنة، تاريخ الحركة، وأحدث التحديثات من فريق العمليات.</p>
+      <div class="chip-row">
+        <span class="chip">⚡ تحديثات لحظية</span>
+        <span class="chip">🔒 بيانات آمنة</span>
+        <span class="chip">🌐 تغطية وطنية</span>
+      </div>
+    </section>
+
+    <section class="glass-card">
+      <div class="section-heading">
+        <div>
+          <h2>أدوات التتبع</h2>
+          <p>أدخل رقم الشحنة بصيغة <strong>GLT-2025-1001</strong> لعرض مسارها.</p>
+        </div>
+      </div>
+      <div class="form-grid inline">
+        <div>
+          <label for="tracking">رقم التتبع</label>
+          <input id="tracking" placeholder="GLT-2025-1001">
+        </div>
+        <button class="button primary" type="button" onclick="track()">بحث</button>
+      </div>
+      <div id="result" class="timeline"></div>
+    </section>
+
+    <p class="footer-note">للمزيد من الدعم يرجى التواصل مع فريق خدمة العملاء.</p>
+  </main>
+
+  <script>
+    const mockShipments = {
+      "GLT-2025-1001": {
+        status: "📍 وصلت إلى أربيل",
+        history: [
+          ["2025-10-01", "تم الاستلام"],
+          ["2025-10-02", "غادرت المستودع"],
+          ["2025-10-03", "قيد النقل"],
+          ["2025-10-04", "📍 وصلت أربيل"]
+        ]
+      },
+      "GLT-2025-0999": {
+        status: "🚚 قيد النقل",
+        history: [
+          ["2025-10-02", "تم الاستلام"],
+          ["2025-10-03", "غادرت المستودع"],
+          ["2025-10-04", "جارٍ التخليص"]
+        ]
+      }
+    };
+
+    function buildTimeline(history) {
+      return history
+        .map((entry) => {
+          const [date, description] = entry;
+          return `<div class="timeline-item"><span class="badge">${date}</span><div>${description}</div></div>`;
+        })
+        .join("");
+    }
+
+    function track() {
+      const input = document.getElementById('tracking').value.trim();
+      const result = document.getElementById('result');
+
+      if (!input) {
+        result.innerHTML = '<div class="alert">⚠️ الرجاء إدخال رقم التعقب.</div>';
+        return;
+      }
+
+      const data = mockShipments[input];
+
+      if (!data) {
+        result.innerHTML = '<div class="alert">❌ لم يتم العثور على شحنة بهذا الرقم.</div>';
+        return;
+      }
+
+      const statusCard = `<div class="timeline-item success"><strong>الحالة الحالية:</strong> ${data.status}</div>`;
+      result.innerHTML = statusCard + buildTimeline(data.history);
+    }
+  </script>
+</body>
+</html>
