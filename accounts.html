@@ -26,128 +26,142 @@
 
   <main class="page-shell">
     <section class="glass-card hero-card">
-      <h2 class="page-title">إدارة عملاء Ghadeer</h2>
-      <p class="lead">أضف عملاء جدد، راجع حساباتهم، وتابع فواتيرهم من مكان واحد مع مزامنة محلية تلقائية.</p>
-      <div class="chip-row">
-        <span class="chip">💾 تخزين محلي آمن</span>
-        <span class="chip">🔍 بحث فوري</span>
-        <span class="chip">📊 ملخصات مالية</span>
+      <div class="hero-content">
+        <h2 class="page-title">دفتر العملاء</h2>
+        <p class="lead">كل ما تحتاجه لمتابعة حسابات العملاء، أرصدتهم، وفواتيرهم في مساحة واحدة متناغمة مع بقية تجربة Ghadeer.</p>
+        <div class="chip-row">
+          <span class="chip">⚡ مزامنة فورية مع المتصفح</span>
+          <span class="chip">🧾 تتبع فواتير مفصّل</span>
+          <span class="chip">📈 مؤشرات أداء مباشرة</span>
+        </div>
       </div>
     </section>
 
-    <section class="glass-card table-card">
-      <div class="table-header">
-        <div class="section-heading">
-          <div>
-            <h2>سجل العملاء</h2>
-            <p>أضف عميلًا جديدًا أو قم بالبحث داخل القائمة الحالية.</p>
+    <section class="glass-card metrics-card" aria-label="ملخص سريع">
+      <div class="metrics-grid">
+        <article class="metric-card">
+          <span class="metric-label">عدد العملاء</span>
+          <span class="metric-value" data-stat="clients">0</span>
+          <span class="metric-trend" data-stat="clientsDelta">—</span>
+        </article>
+        <article class="metric-card">
+          <span class="metric-label">إجمالي الفواتير</span>
+          <span class="metric-value" data-stat="invoices">0</span>
+          <span class="metric-trend" data-stat="invoicesDelta">—</span>
+        </article>
+        <article class="metric-card">
+          <span class="metric-label">إجمالي الرصيد</span>
+          <span class="metric-value" data-stat="balance">0</span>
+          <span class="metric-trend" data-stat="balanceDelta">—</span>
+        </article>
+        <article class="metric-card highlight">
+          <span class="metric-label">أبرز عميل هذا الشهر</span>
+          <span class="metric-value" data-stat="topClient">—</span>
+          <span class="metric-trend" data-stat="topClientTotal">—</span>
+        </article>
+      </div>
+    </section>
+
+    <section class="management-grid">
+      <section class="glass-card controls-card" aria-label="لوحة التحكم السريعة">
+        <h3>إضافة وإدارة سريعة</h3>
+        <p class="section-subtext">أضف عميلًا جديدًا، حمّل بيانات تجريبية أو حافظ على توازن السجل بنقرة واحدة.</p>
+        <form id="clientForm" class="form-grid" autocomplete="off">
+          <div class="field-group">
+            <label for="clientName">اسم العميل</label>
+            <input type="text" id="clientName" placeholder="مثال: شركة شمال كردستان" required>
           </div>
+          <button class="button primary full-width" type="submit">➕ إضافة عميل</button>
+        </form>
+        <div class="card-divider"></div>
+        <div class="actions-stack">
+          <button class="button ghost full-width" type="button" id="seedDemo">تحميل بيانات تجريبية</button>
+          <button class="button subtle full-width" type="button" id="syncNow">مزامنة فورية</button>
+          <button class="button danger full-width" type="button" id="clearAll">مسح جميع العملاء</button>
         </div>
-        <div class="toolbar">
-          <form id="clientForm" class="form-grid inline" onsubmit="addClient(event)">
-            <div>
-              <label for="clientName">اسم العميل</label>
-              <input type="text" id="clientName" placeholder="مثال: شركة شمال كردستان" required>
+        <p class="helper-text">يتم حفظ كل تغيير داخل المتصفح مباشرةً مع إمكانية التصدير والاستيراد.</p>
+      </section>
+
+      <section class="glass-card table-card" aria-label="قائمة العملاء">
+        <div class="table-header">
+          <div class="section-heading">
+            <span class="eyebrow">سجل مباشر</span>
+            <h2>إدارة حسابات العملاء</h2>
+            <p>ابحث، راجع أو عدّل معلومات العملاء مع الحفاظ على توازن النمط البصري.</p>
+          </div>
+          <div class="toolbar">
+            <div class="field-group grow">
+              <label for="search">بحث سريع</label>
+              <div class="input-with-icon">
+                <span class="input-icon">🔍</span>
+                <input type="search" id="search" placeholder="ابحث عن اسم عميل أو جزء منه..." autocomplete="off">
+              </div>
             </div>
-            <button class="button primary" type="submit">➕ إضافة عميل</button>
-          </form>
-          <div>
-            <label for="search">بحث</label>
-            <input type="text" id="search" placeholder="ابحث عن عميل..." oninput="render()">
+            <div class="toolbar-actions">
+              <button class="button ghost" type="button" id="exportData">تصدير JSON</button>
+              <button class="button subtle" type="button" id="importData">استيراد بيانات</button>
+            </div>
           </div>
+          <div class="inline-feedback" id="inlineFeedback" role="status" aria-live="polite"></div>
         </div>
-      </div>
 
-      <div class="table-scroll">
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>👤 العميل</th>
-              <th>📑 عدد الفواتير</th>
-              <th>💰 مجموع الحساب</th>
-              <th>⚙️ خيارات</th>
-            </tr>
-          </thead>
-          <tbody id="clients"></tbody>
-        </table>
-      </div>
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th scope="col">👤 العميل</th>
+                <th scope="col">📑 عدد الفواتير</th>
+                <th scope="col">💰 مجموع الحساب</th>
+                <th scope="col">⚙️ خيارات</th>
+              </tr>
+            </thead>
+            <tbody id="clients"></tbody>
+          </table>
+        </div>
+        <div class="result-meta" id="resultMeta">لم يتم إضافة أي عملاء بعد.</div>
+      </section>
     </section>
 
-    <p class="footer-note">يتم حفظ البيانات في المتصفح لضمان سرعة الوصول وسهولة الإدارة.</p>
+    <p class="footer-note">يتم حفظ البيانات في المتصفح لضمان سرعة الوصول وسهولة الإدارة مع إمكانية المزامنة اليدوية والتصدير.</p>
   </main>
 
-  <script>
-    let accounts = JSON.parse(localStorage.getItem('accounts')) || {};
+  <dialog id="editDialog" class="modal">
+    <form id="editForm" class="modal-card" method="dialog">
+      <header class="modal-header">
+        <h3>تعديل اسم العميل</h3>
+        <button type="button" class="icon-button" data-close="editDialog" aria-label="إغلاق">✖️</button>
+      </header>
+      <div class="modal-body">
+        <label for="editName">الاسم الجديد</label>
+        <input type="text" id="editName" required>
+        <p class="input-hint" id="editHint"></p>
+      </div>
+      <footer class="modal-actions">
+        <button class="button primary" type="submit">حفظ التعديل</button>
+        <button class="button subtle" type="button" data-close="editDialog">إلغاء</button>
+      </footer>
+    </form>
+  </dialog>
 
-    function render() {
-      const tbody = document.getElementById('clients');
-      tbody.innerHTML = '';
-      const query = document.getElementById('search').value.trim();
-      const normalizedQuery = query.toLowerCase();
+  <dialog id="deleteDialog" class="modal">
+    <form id="deleteForm" class="modal-card" method="dialog">
+      <header class="modal-header">
+        <h3>تأكيد الحذف</h3>
+        <button type="button" class="icon-button" data-close="deleteDialog" aria-label="إغلاق">✖️</button>
+      </header>
+      <div class="modal-body">
+        <p id="deleteMessage">سيتم حذف العميل المحدد وجميع سجلاته.</p>
+      </div>
+      <footer class="modal-actions">
+        <button class="button danger" type="submit">تأكيد الحذف</button>
+        <button class="button subtle" type="button" data-close="deleteDialog">إلغاء</button>
+      </footer>
+    </form>
+  </dialog>
 
-      Object.keys(accounts).forEach((client) => {
-        const normalizedClient = client.toLowerCase();
-        if (normalizedQuery && !normalizedClient.includes(normalizedQuery)) {
-          return;
-        }
+  <input type="file" id="importInput" accept="application/json" hidden>
+  <div class="toast" id="toast" role="status" aria-live="assertive"></div>
 
-        const invoices = accounts[client];
-        const total = invoices.reduce((sum, entry) => sum + Number(entry.price || 0), 0);
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${client}</td>
-          <td>${invoices.length}</td>
-          <td>${total.toLocaleString('en-US')}</td>
-          <td>
-            <div class="action-buttons">
-              <button class="action-button view" onclick="viewClient('${client}')">👁️ عرض</button>
-              <button class="action-button edit" onclick="editClient('${client}')">✏️ تعديل</button>
-              <button class="action-button delete" onclick="deleteClient('${client}')">🗑️ حذف</button>
-            </div>
-          </td>`;
-        tbody.appendChild(row);
-      });
-    }
-
-    function addClient(event) {
-      event.preventDefault();
-      const nameField = document.getElementById('clientName');
-      const name = nameField.value.trim();
-      if (!name) {
-        return;
-      }
-      if (!accounts[name]) {
-        accounts[name] = [];
-      }
-      localStorage.setItem('accounts', JSON.stringify(accounts));
-      render();
-      event.target.reset();
-      nameField.focus();
-    }
-
-    function viewClient(name) {
-      window.location.href = 'client.html?name=' + encodeURIComponent(name);
-    }
-
-    function editClient(oldName) {
-      const newName = prompt('أدخل الاسم الجديد للعميل:', oldName);
-      if (newName && newName !== oldName) {
-        accounts[newName] = accounts[oldName];
-        delete accounts[oldName];
-        localStorage.setItem('accounts', JSON.stringify(accounts));
-        render();
-      }
-    }
-
-    function deleteClient(name) {
-      if (confirm('هل تريد حذف هذا العميل وجميع فواتيره؟')) {
-        delete accounts[name];
-        localStorage.setItem('accounts', JSON.stringify(accounts));
-        render();
-      }
-    }
-
-    render();
-  </script>
+  <script type="module" src="assets/js/accounts.js"></script>
 </body>
 </html>
