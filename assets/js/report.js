@@ -19,16 +19,67 @@
     };
   }
 
+  const PX_TO_PT = 0.75; // assumes the browser renders canvas text at 96 DPI
+
+  function drawArabicText(doc, text, rightEdge, topPosition, options = {}) {
+    if (!text) {
+      return 0;
+    }
+
+    const {
+      fontSize = 16,
+      fontWeight = 'normal',
+      color = '#111827'
+    } = options;
+
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+
+    if (!context) {
+      return 0;
+    }
+
+    const scale = window.devicePixelRatio || 1;
+    const baseFont = `${fontWeight} ${fontSize}px "Cairo", "Tahoma", "Arial", sans-serif`;
+
+    context.font = baseFont;
+    context.direction = 'rtl';
+    const metrics = context.measureText(text);
+    const paddingX = 12;
+    const paddingY = Math.ceil(fontSize * 0.35);
+    const renderWidth = Math.ceil(metrics.width) + paddingX * 2;
+    const renderHeight = Math.ceil(fontSize * 1.35) + paddingY * 2;
+
+    canvas.width = renderWidth * scale;
+    canvas.height = renderHeight * scale;
+
+    context.scale(scale, scale);
+    context.clearRect(0, 0, renderWidth, renderHeight);
+    context.font = baseFont;
+    context.fillStyle = color;
+    context.textBaseline = 'top';
+    context.textAlign = 'right';
+    context.direction = 'rtl';
+    context.fillText(text, renderWidth - paddingX, paddingY);
+
+    const dataUrl = canvas.toDataURL('image/png');
+    const widthPt = renderWidth * PX_TO_PT;
+    const heightPt = renderHeight * PX_TO_PT;
+    const left = rightEdge - widthPt;
+
+    doc.addImage(dataUrl, 'PNG', left, topPosition, widthPt, heightPt, undefined, 'FAST');
+
+    return heightPt;
+  }
+
   function formatLines(doc, lines, startY, rightMargin) {
     let currentY = startY;
-    const lineHeight = 26;
 
     lines.forEach((line) => {
-      if (!line) {
-        return;
+      const height = drawArabicText(doc, line, rightMargin, currentY, { fontSize: 14 });
+      if (height) {
+        currentY += height + 10;
       }
-      doc.text(line, rightMargin, currentY, { align: 'right', baseline: 'top' });
-      currentY += lineHeight;
     });
   }
 
@@ -50,11 +101,11 @@
     doc.text('Ghadeer Logistics', 72, 72, { baseline: 'top' });
 
     doc.setFontSize(20);
-    doc.text(data.title, rightMargin, 110, { align: 'right', baseline: 'top' });
+    drawArabicText(doc, data.title, rightMargin, 110, { fontSize: 20, fontWeight: 'bold' });
 
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(12);
-    doc.text(`تاريخ التصدير: ${exportDate}`, rightMargin, 140, { align: 'right', baseline: 'top' });
+    drawArabicText(doc, `تاريخ التصدير: ${exportDate}`, rightMargin, 140, { fontSize: 12 });
 
     doc.setDrawColor(168, 85, 247);
     doc.setLineWidth(2);
