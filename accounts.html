@@ -77,7 +77,27 @@
   </main>
 
   <script>
-    let accounts = JSON.parse(localStorage.getItem('accounts')) || {};
+    function loadAccounts() {
+      const stored = localStorage.getItem('accounts');
+      if (!stored) {
+        return {};
+      }
+      try {
+        const parsed = JSON.parse(stored);
+        if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+          return parsed;
+        }
+      } catch (error) {
+        console.warn('تعذر قراءة بيانات العملاء المحفوظة، سيتم إعادة التهيئة.', error);
+      }
+      return {};
+    }
+
+    function saveAccounts() {
+      localStorage.setItem('accounts', JSON.stringify(accounts));
+    }
+
+    let accounts = loadAccounts();
 
     function render() {
       const tbody = document.getElementById('clients');
@@ -91,7 +111,7 @@
           return;
         }
 
-        const invoices = accounts[client];
+        const invoices = Array.isArray(accounts[client]) ? accounts[client] : [];
         const total = invoices.reduce((sum, entry) => sum + Number(entry.price || 0), 0);
         const row = document.createElement('tr');
         row.innerHTML = `
@@ -116,10 +136,10 @@
       if (!name) {
         return;
       }
-      if (!accounts[name]) {
+      if (!Array.isArray(accounts[name])) {
         accounts[name] = [];
       }
-      localStorage.setItem('accounts', JSON.stringify(accounts));
+      saveAccounts();
       render();
       event.target.reset();
       nameField.focus();
@@ -132,9 +152,9 @@
     function editClient(oldName) {
       const newName = prompt('أدخل الاسم الجديد للعميل:', oldName);
       if (newName && newName !== oldName) {
-        accounts[newName] = accounts[oldName];
+        accounts[newName] = Array.isArray(accounts[oldName]) ? accounts[oldName] : [];
         delete accounts[oldName];
-        localStorage.setItem('accounts', JSON.stringify(accounts));
+        saveAccounts();
         render();
       }
     }
@@ -142,7 +162,7 @@
     function deleteClient(name) {
       if (confirm('هل تريد حذف هذا العميل وجميع فواتيره؟')) {
         delete accounts[name];
-        localStorage.setItem('accounts', JSON.stringify(accounts));
+        saveAccounts();
         render();
       }
     }
