@@ -1,6 +1,4 @@
-<!-- file: invoice.html -->
 <!doctype html>
-
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="utf-8" />
@@ -8,6 +6,9 @@
   <title>الغدير نقل و تخليص | فواتير العميل</title>
   <link rel="stylesheet" href="assets/css/base.css">
   <link rel="stylesheet" href="assets/css/invoice.css">
+  <!-- دعم الخط العربي في PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://unpkg.com/jspdf-autotable@3.5.25/dist/jspdf.plugin.autotable.js"></script>
 </head>
 <body>
   <header class="top">
@@ -36,31 +37,6 @@
         <button class="btn ghost" id="btnRenameInv">تغيير اسم</button>
         <button class="btn danger" id="btnDeleteInv">حذف</button>
       </div>
-
-      <!-- NEW: Filter invoices list -->
-      <hr class="hr">
-      <div class="muted small">بحث/فلترة داخل الفواتير (الاسم + التاريخ).</div>
-
-      <label class="label" style="margin-top:10px">بحث</label>
-      <input id="invSearch" type="search" class="input" placeholder="اكتب جزء من الاسم أو التاريخ (YYYY-MM-DD)">
-
-      <label class="label" style="margin-top:10px">فلترة بالتاريخ (للقائمة)</label>
-      <div class="row" style="gap:10px">
-        <div style="flex:1">
-          <label class="label">من</label>
-          <input id="listFrom" type="date" class="input">
-        </div>
-        <div style="flex:1">
-          <label class="label">إلى</label>
-          <input id="listTo" type="date" class="input">
-        </div>
-      </div>
-
-      <div class="row" style="gap:10px; margin-top:10px">
-        <button class="btn ghost" id="btnListClear">مسح الفلترة</button>
-      </div>
-
-      <hr class="hr">
 
       <label class="label" style="margin-top:12px">اختيار فاتورة</label>
       <select id="invSelect" class="input"></select>
@@ -94,7 +70,7 @@
       <div class="row between no-print">
         <div class="row" style="gap:10px">
           <span class="pill" id="invPill">فاتورة: —</span>
-          <span class="pill">العملة: <b id="curPill" title="اضغط لتغيير العملة">$</b></span>
+          <span class="pill">العملة: <b id="curPill">$</b></span>
         </div>
         <div class="row" style="gap:10px">
           <span class="pill">
@@ -107,11 +83,9 @@
       <h2 class="centerTitle">وصل قبض + كشف حساب</h2>
       <p class="muted center" id="subtitle">—</p>
 
+      <!-- ✅ الزر الجديد فقط لإنشاء PDF -->
       <div class="actions no-print">
-        <button class="btn" id="btnPrintTab">🖨️ طباعة التبويب</button>
-        <button class="btn" id="btnPrintAll">🖨️ طباعة الكل</button>
-        <button class="btn" id="btnXlsxTab">📄 Excel (التبويب)</button>
-        <button class="btn" id="btnXlsxAll">📄 Excel (هذه الفاتورة)</button>
+        <button class="btn primary" id="btnCreatePdf">📄 إنشاء PDF</button>
       </div>
 
       <div class="tabs no-print">
@@ -130,27 +104,9 @@
           <button class="btn danger" id="t1DelCol">حذف العمود المحدد</button>
         </div>
         <table id="t1" class="table" data-min-cols="6">
-          <thead>
-            <tr>
-              <th>رقم</th><th>التاريخ</th><th>اسم السائق</th><th>رقم السيارة</th><th>ملاحظة</th><th>المبلغ</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td contenteditable></td>
-              <td contenteditable></td>
-              <td contenteditable></td>
-              <td contenteditable></td>
-              <td class="amount" contenteditable>0$</td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr>
-              <td id="t1FootLabel" colspan="5">إجمالي العمليات</td>
-              <td id="sum1">0$</td>
-            </tr>
-          </tfoot>
+          <thead><tr><th>رقم</th><th>التاريخ</th><th>اسم السائق</th><th>رقم السيارة</th><th>ملاحظة</th><th>المبلغ</th></tr></thead>
+          <tbody><tr><td>1</td><td contenteditable></td><td contenteditable></td><td contenteditable></td><td contenteditable></td><td class="amount" contenteditable>0$</td></tr></tbody>
+          <tfoot><tr><td id="t1FootLabel" colspan="5">إجمالي العمليات</td><td id="sum1">0$</td></tr></tfoot>
         </table>
       </div>
 
@@ -164,27 +120,9 @@
           <button class="btn danger" id="t2DelCol">حذف العمود المحدد</button>
         </div>
         <table id="t2" class="table" data-min-cols="6">
-          <thead>
-            <tr>
-              <th>رقم</th><th>التاريخ</th><th>اسم السائق</th><th>رقم السيارة</th><th>ملاحظة</th><th>المبلغ</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td contenteditable></td>
-              <td contenteditable></td>
-              <td contenteditable></td>
-              <td contenteditable></td>
-              <td class="amount" contenteditable>0$</td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr>
-              <td id="t2FootLabel" colspan="5">مجموع القبوضات</td>
-              <td id="sum2">0$</td>
-            </tr>
-          </tfoot>
+          <thead><tr><th>رقم</th><th>التاريخ</th><th>اسم السائق</th><th>رقم السيارة</th><th>ملاحظة</th><th>المبلغ</th></tr></thead>
+          <tbody><tr><td>1</td><td contenteditable></td><td contenteditable></td><td contenteditable></td><td contenteditable></td><td class="amount" contenteditable>0$</td></tr></tbody>
+          <tfoot><tr><td id="t2FootLabel" colspan="5">مجموع القبوضات</td><td id="sum2">0$</td></tr></tfoot>
         </table>
       </div>
 
@@ -205,13 +143,31 @@
 
       <!-- Print-only PDF document -->
       <section id="pdfDoc" class="pdfDoc print-only"></section>
+
     </section>
   </main>
 
-  <!-- Optional (for real XLSX exports):
-  <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
-  -->
-
   <script type="module" src="assets/js/invoice-page.js"></script>
+  <script>
+    // كود إنشاء PDF مع دعم اللغة العربية
+    document.getElementById("btnCreatePdf").addEventListener("click", async () => {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ orientation: "p", unit: "pt", format: "a4" });
+
+      // تحميل خط عربي (من Google Fonts أو من ملف)
+      const arabicFont = await fetch("https://cdn.jsdelivr.net/gh/googlefonts/amiri/Amiri-Regular.ttf")
+        .then(r => r.arrayBuffer());
+
+      doc.addFileToVFS("Amiri-Regular.ttf", btoa(String.fromCharCode(...new Uint8Array(arabicFont))));
+      doc.addFont("Amiri-Regular.ttf", "Amiri", "normal");
+      doc.setFont("Amiri");
+      doc.setFontSize(14);
+      doc.text("فاتورة عميل - الغدير نقل و تخليص", 400, 40, { align: "right" });
+      doc.autoTable({ html: "#t1", startY: 70, styles: { font: "Amiri", halign: "right" } });
+      doc.autoTable({ html: "#t2", startY: doc.lastAutoTable.finalY + 20, styles: { font: "Amiri", halign: "right" } });
+
+      doc.save("فاتورة_العميل.pdf");
+    });
+  </script>
 </body>
 </html>
