@@ -17,64 +17,8 @@ const QS = new URLSearchParams(location.search);
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
-const ui = {
-  clientLine: $("#clientLine"),
-  subtitle: $("#subtitle"),
-
-  invCount: $("#invCount"),
-  invSelect: $("#invSelect"),
-  invList: $("#invList"),
-
-  invSearch: $("#invSearch"),
-  listFrom: $("#listFrom"),
-  listTo: $("#listTo"),
-  btnListClear: $("#btnListClear"),
-
-  invPill: $("#invPill"),
-  curPill: $("#curPill"),
-  invDate: $("#invDate"),
-
-  btnNewInv: $("#btnNewInv"),
-  btnRenameInv: $("#btnRenameInv"),
-  btnDeleteInv: $("#btnDeleteInv"),
-
-  pdfFrom: $("#pdfFrom"),
-  pdfTo: $("#pdfTo"),
-  btnPdfRange: $("#btnPdfRange"),
-  btnPdfAll: $("#btnPdfAll"),
-
-  btnExportClientXlsx: $("#btnExportClientXlsx"),
-
-  btnPrintTab: $("#btnPrintTab"),
-  btnPrintAll: $("#btnPrintAll"),
-  btnXlsxTab: $("#btnXlsxTab"),
-  btnXlsxAll: $("#btnXlsxAll"),
-
-  tabBtns: $$(".tabBtn"),
-  tabs: $$(".tab"),
-  pdfDoc: $("#pdfDoc"),
-
-  t1: $("#t1"),
-  t2: $("#t2"),
-  sum1: $("#sum1"),
-  sum2: $("#sum2"),
-
-  f1: $("#f1"),
-  f2: $("#f2"),
-  f3: $("#f3"),
-
-  t1AddRow: $("#t1AddRow"),
-  t1DelRow: $("#t1DelRow"),
-  t1AddCol: $("#t1AddCol"),
-  t1AddColAfter: $("#t1AddColAfter"),
-  t1DelCol: $("#t1DelCol"),
-
-  t2AddRow: $("#t2AddRow"),
-  t2DelRow: $("#t2DelRow"),
-  t2AddCol: $("#t2AddCol"),
-  t2AddColAfter: $("#t2AddColAfter"),
-  t2DelCol: $("#t2DelCol"),
-};
+/* ui will be populated inside init() after DOM is ready */
+let ui;
 
 const clientId = (QS.get("clientId") || QS.get("id") || QS.get("client") || "").trim();
 const clientName = (QS.get("clientName") || QS.get("name") || "").trim();
@@ -512,7 +456,8 @@ function renumberRows(rows) {
 function parseAmount(s) {
   const raw = String(s ?? "").trim();
   if (!raw) return 0;
-  const cleaned = raw.replace(/[^\d.,\-]/g, "").replace(/,/g, "");
+  const cleaned = raw.replace(/[^
+\d.,\-]/g, "").replace(/,/g, "");
   const n = Number.parseFloat(cleaned);
   return Number.isFinite(n) ? n : 0;
 }
@@ -581,7 +526,7 @@ function setupTabs() {
       btn.classList.add("active");
       const key = btn.dataset.tab;
       state.activeTab = key;
-      $("#" + key)?.classList.add("active");
+      "#" + key && document.querySelector("#" + key)?.classList.add("active");
     });
   });
 }
@@ -1157,113 +1102,52 @@ function wireButtons() {
     const inv = getCurrentInvoice();
     if (!inv) return;
     const v = promptNonEmpty("رمز العملة لهذه الفاتورة (مثال: $, د.ع, IQD, AED):", inv.currency || "$");
-    if (!v) return;
-    inv.currency = v;
-    ui.curPill.textContent = v;
-    renderInvoiceIntoDom();
-    requestSave();
-  });
-
-  ui.btnPrintTab.addEventListener("click", () => {
-    saveCurrentFromDom();
-    const inv = getCurrentInvoice();
-    if (!inv) return;
-    printInvoices([inv], "tab");
-  });
-
-  ui.btnPrintAll.addEventListener("click", () => {
-    saveCurrentFromDom();
-    const inv = getCurrentInvoice();
-    if (!inv) return;
-    printInvoices([inv], "all");
-  });
-
-  ui.btnPdfAll.addEventListener("click", () => {
-    saveCurrentFromDom();
-    saveAll();
-    printInvoices(state.invoices, "all");
-  });
-
-  ui.btnPdfRange.addEventListener("click", () => {
-    saveCurrentFromDom();
-    saveAll();
-    const fromIso = ui.pdfFrom.value || "";
-    const toIso = ui.pdfTo.value || "";
-    const filtered = state.invoices.filter((inv) => invoiceInRange(inv, fromIso, toIso));
-    if (!filtered.length) {
-      alert("لا توجد فواتير ضمن هذا المدى. سيتم طباعة كل الفواتير.");
-      printInvoices(state.invoices, "all");
-      return;
+    if (v) {
+      inv.currency = v;
+      requestSave();
+      renderHeaderAndSums();
     }
-    printInvoices(filtered, "all");
-  });
-
-  ui.btnXlsxTab.addEventListener("click", exportTabExcel);
-  ui.btnXlsxAll.addEventListener("click", exportInvoiceExcel);
-  ui.btnExportClientXlsx.addEventListener("click", exportClientExcel);
-
-  ui.t1AddRow.addEventListener("click", () => addRow(ui.t1, "t1"));
-  ui.t1DelRow.addEventListener("click", () => delRow(ui.t1, "t1"));
-  ui.t1AddCol.addEventListener("click", () => addColPinned(ui.t1, "t1", false));
-  ui.t1AddColAfter.addEventListener("click", () => addColPinned(ui.t1, "t1", true));
-  ui.t1DelCol.addEventListener("click", () => delColPinned(ui.t1, "t1"));
-
-  ui.t2AddRow.addEventListener("click", () => addRow(ui.t2, "t2"));
-  ui.t2DelRow.addEventListener("click", () => delRow(ui.t2, "t2"));
-  ui.t2AddCol.addEventListener("click", () => addColPinned(ui.t2, "t2", false));
-  ui.t2AddColAfter.addEventListener("click", () => addColPinned(ui.t2, "t2", true));
-  ui.t2DelCol.addEventListener("click", () => delColPinned(ui.t2, "t2"));
-}
-
-function wireSelection(tableEl, tableId) {
-  tableEl.addEventListener("click", (e) => {
-    const td = e.target?.closest?.("td");
-    if (!td) return;
-    const tr = td.parentElement;
-    const tbody = tableEl.tBodies?.[0];
-    const rowIndex = Array.from(tbody.rows).indexOf(tr);
-    const colIndex = Array.from(tr.cells).indexOf(td);
-    setSelected(tableId, rowIndex, colIndex);
   });
 }
 
-function setupTabs() {
-  ui.tabBtns.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      ui.tabBtns.forEach((b) => b.classList.remove("active"));
-      ui.tabs.forEach((t) => t.classList.remove("active"));
-
-      btn.classList.add("active");
-      const key = btn.dataset.tab;
-      state.activeTab = key;
-      $("#" + key)?.classList.add("active");
-    });
-  });
-}
-
-function init() {
-  renderClientHeader();
+function wireUi() {
   loadAll();
-
+  renderInvoicePickers();
+  renderHeaderAndSums();
   setupTabs();
-
-  wireSelection(ui.t1, "t1");
-  wireSelection(ui.t2, "t2");
-
-  wireTableEditing(ui.t1);
-  wireTableEditing(ui.t2);
-
   wireFilters();
   wireButtons();
-
-  renderInvoicePickers();
-  renderInvoiceIntoDom();
-  renderHeaderAndSums();
-
-  window.addEventListener("beforeunload", () => {
-    saveCurrentFromDom();
-    saveAll();
-  });
+  wireTableEditing(ui.t1);
+  wireTableEditing(ui.t2);
+  wireSelection(ui.t1, "t1");
+  wireSelection(ui.t2, "t2");
 }
 
-init();
+window.addEventListener("DOMContentLoaded", () => {
+  ui = {
+    // Assuming ids are correctly matching your UI
+    invSearch: document.getElementById("invSearch"),
+    listFrom: document.getElementById("listFrom"),
+    listTo: document.getElementById("listTo"),
+    btnListClear: document.getElementById("btnListClear"),
+    invSelect: document.getElementById("invSelect"),
+    invList: document.getElementById("invList"),
+    invCount: document.getElementById("invCount"),
+    btnNewInv: document.getElementById("btnNewInv"),
+    btnRenameInv: document.getElementById("btnRenameInv"),
+    btnDeleteInv: document.getElementById("btnDeleteInv"),
+    invPill: document.getElementById("invPill"),
+    curPill: document.getElementById("curPill"),
+    invDate: document.getElementById("invDate"),
+    subtitle: document.getElementById("subtitle"),
+    sum1: document.getElementById("sum1"),
+    sum2: document.getElementById("sum2"),
+    f1: document.getElementById("f1"),
+    f2: document.getElementById("f2"),
+    f3: document.getElementById("f3"),
+    pdfDoc: document.getElementById("pdfDoc"),
+    tabBtns: document.querySelectorAll(".tabBtn"),
+    tabs: document.querySelectorAll(".tab"),
+  };
+  wireUi();
+});
