@@ -1,358 +1,133 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <title>تسجيل الدخول | Ghadeer</title>
-  <style>
-    :root {
-      color-scheme: dark light;
-      --midnight: #050816;
-      --twilight: #111b34;
-      --aurora: linear-gradient(135deg, #a855f7, #22d3ee);
-      --card: rgba(9, 14, 28, 0.78);
-      --outline: rgba(168, 85, 247, 0.45);
-      --radius: 28px;
-      --text-strong: #f5f7ff;
-      --text-muted: #b8c2e3;
-      --error: #ff7b7b;
-      --success: #50fa9a;
-    }
-
-    * {
-      box-sizing: border-box;
-      font-family: 'Cairo', 'Tahoma', sans-serif;
-    }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 40px 16px;
-      background: radial-gradient(circle at 15% 20%, rgba(168, 85, 247, 0.24), transparent 45%),
-                  radial-gradient(circle at 80% 85%, rgba(34, 211, 238, 0.22), transparent 55%),
-                  linear-gradient(140deg, var(--midnight), var(--twilight));
-      color: var(--text-strong);
-      position: relative;
-      overflow: hidden;
-    }
-
-    body::before,
-    body::after {
-      content: "";
-      position: absolute;
-      width: 420px;
-      height: 420px;
-      border-radius: 50%;
-      background: conic-gradient(from 90deg, rgba(168, 85, 247, 0.2), rgba(34, 211, 238, 0.1), rgba(168, 85, 247, 0.2));
-      filter: blur(2px);
-      z-index: 0;
-      animation: float 16s linear infinite;
-    }
-
-    body::before {
-      top: -120px;
-      left: -160px;
-    }
-
-    body::after {
-      bottom: -160px;
-      right: -200px;
-      animation-duration: 22s;
-      animation-direction: reverse;
-    }
-
-    @keyframes float {
-      0% { transform: translate3d(0, 0, 0) rotate(0deg); }
-      50% { transform: translate3d(12px, -18px, 0) rotate(6deg); }
-      100% { transform: translate3d(0, 0, 0) rotate(0deg); }
-    }
-
-    .card {
-      position: relative;
-      z-index: 1;
-      width: min(440px, 100%);
-      padding: 40px 36px 48px;
-      background: var(--card);
-      border-radius: var(--radius);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 35px 70px rgba(2, 6, 20, 0.6);
-      backdrop-filter: blur(18px) saturate(145%);
-      overflow: hidden;
-    }
-
-    .card::before {
-      content: "";
-      position: absolute;
-      inset: -40% 15% 60% -25%;
-      background: radial-gradient(circle, rgba(134, 213, 255, 0.22), transparent 65%);
-      opacity: 0.6;
-      transform: rotate(8deg);
-      pointer-events: none;
-    }
-
-    .card > * {
-      position: relative;
-      z-index: 1;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 32px;
-    }
-
-    .brand h1 {
-      margin: 0;
-      font-size: 30px;
-      letter-spacing: 0.7px;
-    }
-
-    .badge {
-      padding: 7px 16px;
-      border-radius: 999px;
-      background: rgba(168, 85, 247, 0.14);
-      color: #c084fc;
-      font-size: 13px;
-      font-weight: 600;
-      box-shadow: inset 0 0 0 1px rgba(168, 85, 247, 0.35);
-    }
-
-    .card p {
-      margin: 0 0 22px;
-      color: var(--text-muted);
-      line-height: 1.7;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 600;
-      color: var(--text-strong);
-    }
-
-    .field {
-      position: relative;
-      margin-bottom: 22px;
-    }
-
-    .field input {
-      width: 100%;
-      padding: 16px 52px 16px 18px;
-      border-radius: 16px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      background: rgba(16, 24, 45, 0.85);
-      color: var(--text-strong);
-      font-size: 16px;
-      transition: border 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
-    }
-
-    .field input:focus {
-      outline: none;
-      border-color: var(--outline);
-      box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.18);
-      transform: translateY(-1px);
-    }
-
-    .field span {
-      position: absolute;
-      inset-inline-end: 16px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #82d7f2;
-      opacity: 0.9;
-    }
-
-    button {
-      width: 100%;
-      padding: 16px;
-      border-radius: 18px;
-      border: none;
-      font-size: 17px;
-      font-weight: 700;
-      cursor: pointer;
-      background: var(--aurora);
-      color: #0b0f1c;
-      letter-spacing: 0.6px;
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
-    }
-
-    button:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 18px 34px rgba(15, 23, 42, 0.55);
-    }
-
-    .meta {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-bottom: 28px;
-    }
-
-    .meta a {
-      color: #86d5ff;
-      text-decoration: none;
-      font-weight: 600;
-      position: relative;
-      padding-bottom: 2px;
-    }
-
-    .meta a::after {
-      content: "";
-      position: absolute;
-      inset-inline-start: 0;
-      bottom: 0;
-      width: 100%;
-      height: 2px;
-      background: linear-gradient(90deg, rgba(134, 213, 255, 0.2), rgba(134, 213, 255, 0.8));
-      transform: scaleX(0);
-      transform-origin: inset-inline-start;
-      transition: transform 0.3s ease;
-    }
-
-    .meta a:hover::after,
-    .meta a:focus-visible::after {
-      transform: scaleX(1);
-    }
-
-    .message {
-      margin-top: 18px;
-      min-height: 26px;
-      font-weight: 600;
-      text-align: center;
-    }
-
-    .message.success {
-      color: var(--success);
-    }
-
-    .message.error {
-      color: var(--error);
-    }
-
-    .back-button {
-      position: absolute;
-      top: 24px;
-      inset-inline-start: 24px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 11px 22px;
-      border-radius: 999px;
-      background: rgba(12, 20, 40, 0.82);
-      color: var(--text-strong);
-      text-decoration: none;
-      font-weight: 600;
-      backdrop-filter: blur(12px);
-      box-shadow: inset 0 0 0 1px rgba(134, 213, 255, 0.22);
-      transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
-      z-index: 2;
-    }
-
-    .back-button:hover {
-      transform: translateY(-3px);
-      background: rgba(18, 28, 52, 0.92);
-      box-shadow: inset 0 0 0 1px rgba(168, 85, 247, 0.35);
-    }
-
-    @media (max-width: 480px) {
-      body {
-        padding: 24px 12px;
-      }
-
-      .card {
-        padding: 32px 24px 38px;
-      }
-
-      .brand h1 {
-        font-size: 24px;
-      }
-    }
-  </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>الغدير نقل و تخليص | العملاء</title>
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/clients.css">
 </head>
 <body>
-  <a href="index.html" class="back-button">🏠 الرئيسية</a>
-  <div class="card" role="main">
+  <header class="top">
     <div class="brand">
-      <h1>مرحبا بكم</h1>
-      <span class="badge">بوابة Ghadeer</span>
-    </div>
-    <p>أدخل بياناتك للمتابعة. الحسابات المتاحة: مالك الشركة <strong>Star</strong> أو المستخدم <strong>Muhanad</strong>.</p>
-
-    <div class="meta">
-      <span>حماية متعددة الطبقات</span>
-      <a href="#" onclick="showHint(event)">تلميح سريع</a>
+      <div class="logo">غ</div>
+      <div>
+        <h1>الغدير نقل و تخليص</h1>
+        <p>إدارة العملاء + فواتير متعددة لكل عميل</p>
+      </div>
     </div>
 
-    <form onsubmit="login(event)" aria-labelledby="login-title">
-      <label for="username">اسم المستخدم</label>
-      <div class="field">
-        <input id="username" name="username" autocomplete="username" placeholder="اكتب اسم المستخدم" required>
-        <span>👤</span>
+    <nav class="nav">
+      <button class="btn ghost" id="btnBackup">تنزيل نسخة احتياط</button>
+      <button class="btn ghost" id="btnRestore">استيراد نسخة</button>
+      <a class="btn primary" href="reports.html">التقارير</a>
+    </nav>
+  </header>
+
+  <main class="wrap grid">
+    <section class="card">
+      <div class="row between">
+        <div>
+          <h2>العملاء</h2>
+          <div class="muted small">اضغط “معلومات العميل” لفتح فواتيره في invoice.html</div>
+        </div>
+        <div class="row" style="gap:10px">
+          <div class="pill" id="clientsCount">العملاء: 0</div>
+          <input id="q" class="input" placeholder="بحث بالاسم/الهاتف/المكان...">
+        </div>
       </div>
 
-      <label for="password">كلمة المرور</label>
-      <div class="field">
-        <input id="password" name="password" type="password" autocomplete="current-password" placeholder="اكتب كلمة المرور" required>
-        <span>🔒</span>
+      <div id="empty" class="empty hidden">لا يوجد عملاء. أضف عميل من النموذج.</div>
+
+      <div class="tableWrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>الاسم</th>
+              <th>الهاتف</th>
+              <th>المكان</th>
+              <th>عدد الفواتير</th>
+              <th>الرصيد الكلي</th>
+              <th>إجراءات</th>
+            </tr>
+          </thead>
+          <tbody id="clientsBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="row between">
+        <div>
+          <h2>إضافة عميل</h2>
+</div>
+        <button class="btn ghost" id="btnClear">مسح</button>
       </div>
 
-      <button type="submit">تسجيل الدخول</button>
-    </form>
+      <div class="form">
+        <label class="label">اسم العميل</label>
+        <input id="name" class="input" placeholder="مثال: أحمد علي">
 
-    <div id="message" class="message" aria-live="polite"></div>
+        <label class="label">رقم الهاتف</label>
+        <input id="phone" class="input" placeholder="مثال: 0770xxxxxxx">
+
+        <label class="label">المكان</label>
+        <input id="location" class="input" placeholder="مثال: بغداد - الكرادة">
+
+        <div class="row" style="gap:10px">
+          <div style="flex:1">
+            <label class="label">العملة</label>
+            <select id="currency" class="input">
+              <option value="$">$</option>
+              <option value="IQD">IQD</option>
+              <option value="USD">USD</option>
+            </select>
+          </div>
+          <div class="row" style="align-items:flex-end; gap:10px">
+            <button class="btn ok" id="btnSave">إضافة</button>
+</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  
+  <!-- Edit Slide (Top Sheet) -->
+  <div id="editOverlay" class="overlay hidden" aria-hidden="true">
+    <div id="editSheet" class="sheet" role="dialog" aria-modal="true" aria-label="تعديل العميل">
+      <div class="sheetHeader">
+        <div>
+          <div class="sheetTitle">تعديل العميل</div>
+          <div class="sheetSub muted small" id="editMeta">—</div>
+        </div>
+        <button class="btn ghost" id="btnEditClose">إغلاق</button>
+      </div>
+
+      <div class="sheetBody">
+        <label class="label">اسم العميل</label>
+        <input id="editName" class="input" placeholder="اسم العميل">
+
+        <label class="label">رقم الهاتف</label>
+        <input id="editPhone" class="input" placeholder="رقم الهاتف">
+
+        <label class="label">المكان</label>
+        <input id="editLocation" class="input" placeholder="المكان">
+
+        <label class="label">العملة</label>
+        <select id="editCurrency" class="input">
+          <option value="$">$</option>
+          <option value="IQD">IQD</option>
+          <option value="USD">USD</option>
+        </select>
+
+        <div class="row sheetActions">
+          <button class="btn ok" id="btnEditSave">حفظ التعديل</button>
+          <button class="btn danger" id="btnEditDelete">حذف العميل</button>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <script>
-    const credentials = {
-      "star": { password: "Star1996", role: "مالك Ghadeer" },
-      "muhanad": { password: "Muhanad1996", role: "مستخدم معتمد" }
-    };
-
-    function normalize(value) {
-      return value.trim().toLowerCase();
-    }
-
-    function showHint(event) {
-      event.preventDefault();
-      const message = document.getElementById('message');
-      message.textContent = "المالك: Star | المستخدم: Muhanad";
-      message.className = 'message';
-    }
-
-    function login(event) {
-      event.preventDefault();
-      const usernameInput = document.getElementById('username');
-      const passwordInput = document.getElementById('password');
-      const message = document.getElementById('message');
-
-      const username = normalize(usernameInput.value);
-      const password = passwordInput.value.trim();
-
-      const account = credentials[username];
-
-      if (account && account.password === password) {
-        message.textContent = `✅ أهلاً ${account.role}! سيتم تحويلك للواجهة الرئيسية.`;
-        message.className = 'message success';
-        setTimeout(() => {
-          window.location.href = 'Home.html';
-        }, 1200);
-      } else {
-        message.textContent = '❌ البيانات المدخلة غير صحيحة. حاول مرة أخرى.';
-        message.className = 'message error';
-      }
-    }
-
-    document.getElementById('password').addEventListener('keydown', (event) => {
-      if (event.key === 'Enter') {
-        login(event);
-      }
-    });
-  </script>
+  <script type="module" src="assets/js/clients-page.js"></script>
 </body>
 </html>

@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>الغدير نقل و تخليص | التقارير</title>
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/reports.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <div class="logo">غ</div>
+      <div>
+        <h1>التقارير</h1>
+        <p>ملخص أرصدة العملاء + فواتيرهم</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a class="btn ghost" href="index.html">← العملاء</a>
+      <button class="btn primary" id="btnExportAll">📄 Excel (الكل)</button>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <section class="card">
+      <div class="row between">
+        <div>
+          <h2>ملخص العملاء</h2>
+          <div class="muted small">الرصيد = مجموع(العمليات) - مجموع(القبوضات)</div>
+        </div>
+        <input id="rq" class="input" placeholder="بحث..." style="max-width:320px">
+      </div>
+
+      <div class="tableWrap" style="margin-top:10px">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>العميل</th>
+              <th>الهاتف</th>
+              <th>المكان</th>
+              <th>عدد الفواتير</th>
+              <th>الرصيد الكلي</th>
+              <th>فتح</th>
+            </tr>
+          </thead>
+          <tbody id="rBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+<script type="module" src="assets/js/reports-page.js"></script>
+</body>
+</html>
