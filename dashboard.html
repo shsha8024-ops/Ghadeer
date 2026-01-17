@@ -1,138 +1,217 @@
-<!DOCTYPE html>
+<!-- file: invoice.html -->
+<!doctype html>
+
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Ghadeer Logistics | لوحة التحكم</title>
-  <link rel="stylesheet" href="assets/css/theme.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
-  <script defer>
-    document.addEventListener('DOMContentLoaded', () => {
-      const canvas = document.getElementById('shipmentsChart');
-      if (!canvas || !window.Chart) {
-        return;
-      }
-
-      const context = canvas.getContext('2d');
-      new Chart(context, {
-        type: 'line',
-        data: {
-          labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو'],
-          datasets: [{
-            label: 'عدد الشحنات',
-            data: [12, 19, 15, 22, 30, 40],
-            borderColor: '#38e0ff',
-            backgroundColor: 'rgba(34, 211, 238, 0.25)',
-            fill: true,
-            tension: 0.38,
-            borderWidth: 2
-          }]
-        },
-        options: {
-          plugins: {
-            legend: {
-              labels: {
-                color: '#f5f7ff',
-                font: {
-                  family: 'Cairo',
-                  size: 14
-                }
-              }
-            }
-          },
-          scales: {
-            x: {
-              ticks: { color: '#d1d6f5' },
-              grid: { color: 'rgba(209, 214, 245, 0.08)' }
-            },
-            y: {
-              ticks: { color: '#d1d6f5' },
-              grid: { color: 'rgba(209, 214, 245, 0.08)' }
-            }
-          }
-        }
-      });
-    });
-  </script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>الغدير نقل و تخليص | فواتير العميل</title>
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/invoice.css">
 </head>
 <body>
-  <header class="app-header">
+  <header class="top">
     <div class="brand">
-      <div class="brand-mark">GL</div>
-      <h1>Ghadeer Logistics</h1>
+      <div class="logo">غ</div>
+      <div>
+        <h1>فواتير العميل</h1>
+        <p id="clientLine">—</p>
+      </div>
     </div>
-    <nav class="nav-links">
-      <a class="nav-link" href="Home.html">الرئيسية</a>
-      <a class="nav-link" href="about.html">عن الشركة</a>
-      <a class="nav-link active" href="dashboard.html">لوحة التحكم</a>
-      <a class="nav-link" href="accounts.html">الحسابات</a>
-      <a class="nav-link" href="track.html">تتبع الشحنات</a>
-      <a class="nav-link" href="Reportal.html">التقارير</a>
-      <a class="nav-link" href="contact.html">اتصل بنا</a>
-      <a class="nav-link" href="index.html">تسجيل الدخول</a>
+    <nav class="nav">
+      <a class="btn ghost" href="index.html">← العملاء</a>
+      <a class="btn ghost" href="reports.html">التقارير</a>
     </nav>
   </header>
 
-  <main class="page-shell">
-    <section class="glass-card hero-card">
-      <h2 class="page-title">لوحة القيادة التنفيذية</h2>
-      <p class="lead">نظرة شاملة على أداء عمليات Ghadeer من حيث الشحنات، العملاء، وسرعة التنفيذ.</p>
-      <div class="chip-row">
-        <span class="chip">📦 38 شحنة نشطة</span>
-        <span class="chip">✅ 30 شحنة مكتملة</span>
-        <span class="chip">👥 45 عميلًا نشطًا</span>
+  <main class="wrap invoiceGrid">
+    <aside class="card no-print">
+      <div class="row between">
+        <h2 style="margin:0">الفواتير</h2>
+        <span class="pill" id="invCount">0</span>
       </div>
-    </section>
 
-    <section class="stats-grid">
-      <div class="glass-card stat-card">
-        <p class="stat-label">متوسط زمن التسليم</p>
-        <p class="stat-value">36 ساعة</p>
-        <span class="stat-trend">▲ تحسن 6%</span>
+      <div class="row" style="gap:10px; margin-top:10px">
+        <button class="btn primary" id="btnNewInv">+ فاتورة</button>
+        <button class="btn ghost" id="btnRenameInv">تغيير اسم</button>
+        <button class="btn danger" id="btnDeleteInv">حذف</button>
       </div>
-      <div class="glass-card stat-card">
-        <p class="stat-label">نسبة الالتزام بالمواعيد</p>
-        <p class="stat-value">94%</p>
-        <span class="stat-trend success">↑ ممتاز</span>
-      </div>
-      <div class="glass-card stat-card">
-        <p class="stat-label">إجمالي الإيراد الشهري</p>
-        <p class="stat-value">145M د.ع</p>
-        <span class="stat-trend">▲ +12% مقارنة بالشهر الماضي</span>
-      </div>
-      <div class="glass-card stat-card">
-        <p class="stat-label">مؤشر رضا العملاء</p>
-        <p class="stat-value">4.8/5</p>
-        <span class="stat-trend success">⭐ ملاحظات إيجابية</span>
-      </div>
-    </section>
 
-    <section class="glass-card">
-      <div class="section-heading">
-        <div>
-          <h2>إحصائيات الشحنات</h2>
-          <p>تطور عدد الشحنات خلال الأشهر الستة الأخيرة.</p>
+      <!-- NEW: Filter invoices list -->
+      <hr class="hr">
+      <div class="muted small">بحث/فلترة داخل الفواتير (الاسم + التاريخ).</div>
+
+      <label class="label" style="margin-top:10px">بحث</label>
+      <input id="invSearch" type="search" class="input" placeholder="اكتب جزء من الاسم أو التاريخ (YYYY-MM-DD)">
+
+      <label class="label" style="margin-top:10px">فلترة بالتاريخ (للقائمة)</label>
+      <div class="row" style="gap:10px">
+        <div style="flex:1">
+          <label class="label">من</label>
+          <input id="listFrom" type="date" class="input">
+        </div>
+        <div style="flex:1">
+          <label class="label">إلى</label>
+          <input id="listTo" type="date" class="input">
         </div>
       </div>
-      <canvas id="shipmentsChart" height="220"></canvas>
-    </section>
 
-    <section class="cards-grid">
-      <article class="info-card">
-        <h3>الشحنات المتأخرة</h3>
-        <p>3 شحنات تحتاج إلى متابعة إضافية مع فرق التخليص الجمركي.</p>
-      </article>
-      <article class="info-card">
-        <h3>أهم العملاء</h3>
-        <p>شركة شمال كردستان، أسواق أربيل، وشركة الطيف اللوجستية.</p>
-      </article>
-      <article class="info-card">
-        <h3>الإجراءات القادمة</h3>
-        <p>توقيع عقود موسعة، تحديث أسطول الشاحنات، وإطلاق مركز دعم جديد.</p>
-      </article>
-    </section>
+      <div class="row" style="gap:10px; margin-top:10px">
+        <button class="btn ghost" id="btnListClear">مسح الفلترة</button>
+      </div>
 
-    <p class="footer-note">لوحة التحكم الداخلية لـ Ghadeer Logistics - بيانات تجريبية للتوضيح.</p>
+      <hr class="hr">
+
+      <label class="label" style="margin-top:12px">اختيار فاتورة</label>
+      <select id="invSelect" class="input"></select>
+
+      <div id="invList" class="invList"></div>
+
+      <hr class="hr">
+      <div class="pdfBox">
+        <div class="muted small">تصدير PDF حسب مدى تاريخ (يعتمد على تاريخ الفاتورة).</div>
+        <div class="row" style="gap:10px; margin-top:10px">
+          <div style="flex:1">
+            <label class="label">من</label>
+            <input id="pdfFrom" type="date" class="input">
+          </div>
+          <div style="flex:1">
+            <label class="label">إلى</label>
+            <input id="pdfTo" type="date" class="input">
+          </div>
+        </div>
+        <div class="row" style="gap:10px; margin-top:10px">
+          <button class="btn primary" id="btnPdfRange">📄 PDF مباشر (حسب التاريخ)</button>
+          <button class="btn ghost" id="btnPdfAll">📄 PDF مباشر (كل الفواتير)</button>
+        </div>
+      </div>
+
+      <hr class="hr">
+      <button class="btn ghost" id="btnExportClientXlsx">📄 Excel (كل فواتير العميل)</button>
+    </aside>
+
+    <section class="card">
+      <div class="row between no-print">
+        <div class="row" style="gap:10px">
+          <span class="pill" id="invPill">فاتورة: —</span>
+          <span class="pill">العملة: <b id="curPill" title="اضغط لتغيير العملة">$</b></span>
+        </div>
+        <div class="row" style="gap:10px">
+          <span class="pill">
+            التاريخ:
+            <input id="invDate" type="date" class="dateInput">
+          </span>
+        </div>
+      </div>
+
+      <h2 class="centerTitle">وصل قبض + كشف حساب</h2>
+      <p class="muted center" id="subtitle">—</p>
+
+      <div class="actions no-print">
+        <button class="btn" id="btnPrintTab">🖨️ طباعة التبويب</button>
+        <button class="btn" id="btnPrintAll">🖨️ طباعة الكل</button>
+        <button class="btn" id="btnXlsxTab">📄 Excel (التبويب)</button>
+        <button class="btn" id="btnXlsxAll">📄 Excel (هذه الفاتورة)</button>
+      </div>
+
+      <div class="tabs no-print">
+        <button class="tabBtn active" data-tab="ops">العمليات</button>
+        <button class="tabBtn" data-tab="pay">القبوضات</button>
+        <button class="tabBtn" data-tab="final">الحساب النهائي</button>
+      </div>
+
+      <div id="ops" class="tab active">
+        <h3>العمليات</h3>
+        <div class="toolbar no-print">
+          <button class="btn primary" id="t1AddRow">+ سطر</button>
+          <button class="btn danger" id="t1DelRow">حذف السطر المحدد</button>
+          <button class="btn primary" id="t1AddCol">+ عمود</button>
+          <button class="btn primary" id="t1AddColAfter">+ عمود بعد المحدد</button>
+          <button class="btn danger" id="t1DelCol">حذف العمود المحدد</button>
+        </div>
+        <table id="t1" class="table" data-min-cols="6">
+          <thead>
+            <tr>
+              <th>رقم</th><th>التاريخ</th><th>اسم السائق</th><th>رقم السيارة</th><th>ملاحظة</th><th>المبلغ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td contenteditable></td>
+              <td contenteditable></td>
+              <td contenteditable></td>
+              <td contenteditable></td>
+              <td class="amount" contenteditable>0$</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td id="t1FootLabel" colspan="5">إجمالي العمليات</td>
+              <td id="sum1">0$</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <div id="pay" class="tab">
+        <h3>القبوضات</h3>
+        <div class="toolbar no-print">
+          <button class="btn primary" id="t2AddRow">+ سطر</button>
+          <button class="btn danger" id="t2DelRow">حذف السطر المحدد</button>
+          <button class="btn primary" id="t2AddCol">+ عمود</button>
+          <button class="btn primary" id="t2AddColAfter">+ عمود بعد المحدد</button>
+          <button class="btn danger" id="t2DelCol">حذف العمود المحدد</button>
+        </div>
+        <table id="t2" class="table" data-min-cols="6">
+          <thead>
+            <tr>
+              <th>رقم</th><th>التاريخ</th><th>اسم السائق</th><th>رقم السيارة</th><th>ملاحظة</th><th>المبلغ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td contenteditable></td>
+              <td contenteditable></td>
+              <td contenteditable></td>
+              <td contenteditable></td>
+              <td class="amount" contenteditable>0$</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td id="t2FootLabel" colspan="5">مجموع القبوضات</td>
+              <td id="sum2">0$</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <div id="final" class="tab">
+        <h3>الحساب النهائي</h3>
+        <table class="table">
+          <tr><th>إجمالي العمليات</th><td id="f1">0$</td></tr>
+          <tr><th>مجموع القبوضات</th><td id="f2">0$</td></tr>
+          <tr><th>الرصيد النهائي</th><td id="f3">0$</td></tr>
+        </table>
+        <div class="sign">
+          <div>توقيع المستلم</div>
+          <div>توقيع المحاسب</div>
+        </div>
+      </div>
+
+      <div class="muted small" style="margin-top:10px">حفظ تلقائي لكل فاتورة داخل المتصفح.</div>
+
+      <!-- Print-only PDF document -->
+      <section id="pdfDoc" class="pdfDoc print-only"></section>
+    </section>
   </main>
+
+  <!-- Optional (for real XLSX exports):
+  <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+  -->
+
+  <script type="module" src="assets/js/invoice-page.js"></script>
 </body>
 </html>
